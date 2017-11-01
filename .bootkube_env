@@ -1,0 +1,58 @@
+### BOOTKUBE PREPARATION:
+export PROXY_ENABLED=true                     ### ENABLE PROXY SETTINGS        ###
+export BOOTKUBE_DIR='/opt/demo'            ### BOOTKUBE-CI DIRECTORY        ###
+export TMPDIR='/tmp/download'                 ### TEMP DOWNLOADS GO HERE       ###
+export CNI_VERSION=v0.6.0                     ### CNI VERSION                  ###
+export HELM_VERSION=v2.6.1                    ### HELM VERSION                 ###
+export BOOTKUBE_VERSION=v0.6.2                ### BOOTKUBE VERSION             ###
+export KUBERNETES_VERSION=v1.7.5              ### KUBERNETES VERSION           ###
+export KUBE_SDN='calico'                      ### SDN SELECTION                ###
+export KUBE_SDN_VERSION=2.6.1                 ### SDN VERSION (CALICO ONLY)    ###
+export KUBE_POD_CIDR='10.25.0.0/16'           ### SDN POD CIDR RANGE           ###
+export KUBE_SVC_CIDR='10.96.0.0/16'           ### SDN SERVICE CIDR RANGE       ###
+export ETCD_SVC_ADDR='10.96.232.136'          ### ETCD CLUSTER IP ADDRESS      ###
+export ETCD_SVC_PORT='6666'                   ### ETCD SERVICE PORT            ###
+export ETCD_SVC_PEER='6667'                   ### ETCD SERVICE PEER PORT       ###
+export KUBE_SVC_PORT='8443'                   ### PORT FOR KUBE API ENDPOINT   ###
+export KUBE_HW='ens3'                         ### MODIFY FOR IFCONFIG HW INT   ###
+export KUBE_DNS_API='kubernetes.default'      ### DNS API ENDPOINT             ###
+export NSERVER01='10.96.0.10'                 ### NEEDS TO BE CLUSTER DNS IP   ###
+export NSERVER02='8.8.4.4'                    ### THE PRIMARY DNS SERVER       ###
+export NSERVER03='8.8.8.8'                    ### THE SECONDARY DNS SERVER     ###
+export NSEARCH01='svc.cluster.local'          ### MODIFY FOR YOUR ENVIRONMENT  ###
+export NSEARCH02='jinkit.com'                 ### MODIFY FOR YOUR ENVIRONMENT  ###
+export KUBE_ARCH='amd64'                      ### MODIFY FOR YOUR ARCHITECTURE ###
+export KUBE_IMAGE='quay.io/coreos/hyperkube'  ### MODIFY FOR YOUR ENVIRONMENT  ###
+export KUBE_IP=$(ip a s dev $KUBE_HW | awk '/inet /{gsub("/.*", "");print $2}')
+
+### OPENSTACK-HELM PREPARATION:
+#!/bin/bash
+source ../.bootkube_env
+export HOST_SUB_CIDR='192.168.4.0/22'         ### HOST SUBNET CIDR            ###
+export OSH_BRANCH=master                      ### OSH BRANCH                  ###
+export HELM_REPO=local                        ### HELM REPO TO UPLOAD CHARTS  ###
+export CEPH_CLUSTER_NETWORK=${HOST_SUB_CIDR}  ### CEPH CLUSTER NETWORK        ###
+export CEPH_PUBLIC_NETWORK=${HOST_SUB_CIDR}   ### CEPH PUBLIC NETWORK         ###
+export CEPH_RGW_KEYSTONE_ENABLED=true         ### CEPH RGW ENABLED KEYSTONE   ###
+export MARIADB_SIZE=15Gi                      ### MARIADB PVC SIZE            ###
+export MARIADB_REPLICAS=1                     ### MARIADB REPLICA_COUNT       ###
+export RABBITMQ_REPLICAS=1                    ### RABBITMQ REPLICA COUNT      ###
+export OVS_EXTERNAL_IFACE=eth1                ### OPENVSWITCH EXT IFACE       ###
+export GLANCE_BACKEND=radosgw                 ### GLANCE BACKEND OPTIONS      ###
+
+# OPENSTACK-HELM  NETWORKING
+export PROVIDER_NETWORK=public
+export PROVIDER_SEGMENT=100
+export SUBNET_RANGE=44.24.8.0/22
+export GATEWAY=44.24.8.1
+export ALLOC_POOL_START="44.24.8.100"
+export ALLOC_POOL_END="44.24.8.250"
+export DNS_NAMESERVER=44.128.12.15
+
+# OPENSTACK-HELM TENANT INFO
+export OS_ADMIN_PROJECT=ctec                  ### OPENSTACK TENANT            ###
+export OS_ADMIN_USERNAME=charter_admin        ### OPENSTACK ADMIN USERNAME    ###
+export OS_ADMIN_PASSWORD=password             ### OPENSTACK ADMIN PASSWORD    ###
+export OS_SVC_PROJECT=demo                    ### OPENSTACK SVC TENANT        ###
+export OS_SVC_USERNAME=demo                   ### OPENSTACK SVC USERNAME      ###
+export OS_SVC_PASSWORD=password               ### OPENSTACK SVC PASSWORD      ###
