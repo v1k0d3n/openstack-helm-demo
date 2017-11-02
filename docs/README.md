@@ -1,12 +1,18 @@
 # Getting Started
 
-1. First, clone the repository into the /opt directory on your host.
+1. First, update the host and reboot.
+
+```
+sudo apt-get update && sudo apt-get dist-upgrade -y && sudo reboot
+```
+
+2. When the host comes back, clone the repository into the /opt directory (example below).
 
 ```
 git clone git@github.com:v1k0d3n/demo.git && sudo mv demo /opt/demo
 ```
 
-2. Make sure that a second interface exists, and remains available for OpenStack-Helm to use. This means that the interface is up, yet not specifically configured like the "Interface Example" below.
+3. Make sure that a second interface exists, and remains available for OpenStack-Helm to use. This means that the interface is up, yet not specifically configured like the "Interface Example" below.
 
 Interface Example:
 ```
@@ -18,4 +24,10 @@ iface ens4 inet manual
   pre-up ip link set ens4 up
 
 ubuntu@os-demo:/opt/demo$ sudo ifup ens4
+```
+
+4. It's helpful to add `/opt/demo/` to your bashrc file (if using bash).
+
+```
+export PATH=${PATH}:/opt/demo
 ```
