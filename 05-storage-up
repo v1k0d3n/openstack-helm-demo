@@ -148,4 +148,21 @@ done
 echo_green "SUCCESS"
 echo_green "OPENSTACK CEPH STORAGE READY!"
 echo ""
+
+echo -e -n "Deploying NFS default storageclass to default namespace for dynamic provisioning..."
+helm install --name default-nfs --set storageclass.name=default local/nfs-provisioner
+while true; do
+  running_count=$(sudo kubectl --kubeconfig=/etc/kubernetes/kubeconfig get pods -n default --no-headers 2>/dev/null | grep "Running" | grep "nfs-provisioner" | wc -l)
+  ### Expect all components to be out of a "ContainerCreating" state before collecting log data (this includes CrashLoopBackOff states):
+  if [ "$running_count" -ge 1 ]; then
+    break
+  fi
+  echo -n "."
+  sleep 1
+done
+echo_green "SUCCESS"
+echo_green "DEFAULT NFS STORAGE READY!"
+echo ""
+
+kubectl patch storageclass default -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"true"}}}'
 exit
