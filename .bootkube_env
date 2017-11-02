@@ -1,6 +1,6 @@
 ### BOOTKUBE PREPARATION:
 export PROXY_ENABLED=true                     ### ENABLE PROXY SETTINGS        ###
-export BOOTKUBE_DIR='/opt/demo'            ### BOOTKUBE-CI DIRECTORY        ###
+export BOOTKUBE_DIR='/opt/demo'               ### BOOTKUBE-CI DIRECTORY        ###
 export TMPDIR='/tmp/download'                 ### TEMP DOWNLOADS GO HERE       ###
 export CNI_VERSION=v0.6.0                     ### CNI VERSION                  ###
 export HELM_VERSION=v2.6.1                    ### HELM VERSION                 ###
