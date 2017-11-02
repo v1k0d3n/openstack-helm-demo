@@ -1,0 +1,8 @@
+[submodule "projects/freeipa_rpc"]
+	path = projects/freeipa_rpc
+	url = https://github.com/lukepatrick/freeipa_rpc.git
+	branch = master
+[submodule "projects/openstack-helm"]
+	path = projects/openstack-helm
+	url = https://github.com/openstack/openstack-helm.git
+	branch = master
