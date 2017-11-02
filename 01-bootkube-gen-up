@@ -37,7 +37,7 @@ EOF
 
 ### NEW INSTALLATIONS:
 echo_green "\nPhase I: Installing system prerequisites:"
-pkg="build-essential curl docker.io ethtool git lldpd socat traceroute vim"
+pkg="build-essential curl docker.io ethtool git lldpd socat traceroute vim ceph-common"
 
 for pkg in $pkg; do
     if sudo dpkg --get-selections | grep -q "^$pkg[[:space:]]*install$" >/dev/null; then

@@ -134,6 +134,20 @@ sudo helm install --namespace=openstack $HELM_REPO/ceph --name=ceph-openstack-co
   --set deployment.client_secrets=true \
   --set deployment.rgw_keystone_user_and_endpoints=false
 
+echo_yellow "\nActivating the monitoring namespace for Ceph storage:"
+sudo helm install --namespace=monitoring $HELM_REPO/ceph --name=ceph-monitoring-config \
+  --set endpoints.identity.namespace=openstack \
+  --set endpoints.object_store.namespace=ceph \
+  --set endpoints.ceph_mon.namespace=ceph \
+  --set ceph.rgw_keystone_auth=$CEPH_RGW_KEYSTONE_ENABLED \
+  --set network.public=$CEPH_PUBLIC_NETWORK \
+  --set network.cluster=$CEPH_CLUSTER_NETWORK \
+  --set deployment.storage_secrets=false \
+  --set deployment.ceph=false \
+  --set deployment.rbd_provisioner=false \
+  --set deployment.client_secrets=true \
+  --set deployment.rgw_keystone_user_and_endpoints=false
+
 # NOTE: The following lines create the claims in ceph for Glance (images) and cinder (volumes).
 echo -e -n "Waiting for all Ceph Keys to be activated in the openstack namespace..."
 while true; do
@@ -147,6 +161,20 @@ while true; do
 done
 echo_green "SUCCESS"
 echo_green "OPENSTACK CEPH STORAGE READY!"
+echo ""
+
+echo -e -n "Waiting for all Ceph Keys to be activated in the monitoring namespace..."
+while true; do
+  running_count=$(sudo kubectl --kubeconfig=/etc/kubernetes/kubeconfig get pods -n ceph --no-headers 2>/dev/null | grep "Running" | grep "ceph" | wc -l)
+  ### Expect all components to be out of a "ContainerCreating" state before collecting log data (this includes CrashLoopBackOff states):
+  if [ "$running_count" -ge 6 ]; then
+    break
+  fi
+  echo -n "."
+  sleep 1
+done
+echo_green "SUCCESS"
+echo_green "MONITORING CEPH STORAGE READY!"
 echo ""
 
 echo -e -n "Deploying NFS default storageclass to default namespace for dynamic provisioning..."

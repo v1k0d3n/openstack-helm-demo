@@ -27,16 +27,15 @@ function echo_red {
 function echo_yellow {
   echo -e "${YELLOW}$1"; tput sgr0
 }
-source .bootkube_env
 
-# BRING UP INFRASTRUCTURE ITEMS:
-echo -e -n "Bringing up MariaDB..."
-helm install --name=mariadb $HELM_REPO/mariadb --namespace=openstack
+source /opt/demo/.bootkube_env
 
-### BRING UP THE INFRASTRUCTURE COMPONENTS:
-#helm install --name=memcached $HELM_REPO/memcached --namespace=openstack
-#helm install --name=etcd-rabbitmq $HELM_REPO/etcd --namespace=openstack
-#helm install --name=rabbitmq $HELM_REPO/rabbitmq --namespace=openstack
-#helm install --name=ingress $HELM_REPO/ingress --namespace=openstack
-#helm install --name=libvirt $HELM_REPO/libvirt --namespace=openstack
-#helm install --name=openvswitch $HELM_REPO/openvswitch --namespace=openstack
+echo_yellow "\nCleaning any potential stale jobs before launching Armada deployment:"
+export job_array=`(kubectl get jobs -n monitoring | (awk -F"," '{print $1}') | (cut -d' ' -f1) | (sed '1d') | (awk '/[^[:upper:] ]/') | grep -v ceph)`
+for job in $job_array;do
+ `kubectl delete job $job -n monitoring`
+done
+
+echo_yellow "\nUsing Armada to deploy Prometheus and Grafana:"
+sudo docker exec armada armada tiller --status
+sudo docker exec armada armada apply /examples/monitoring.yaml
