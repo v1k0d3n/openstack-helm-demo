@@ -262,7 +262,7 @@ echo_green "\nCOMPLETE!\n"
 
 echo_green "\nPhase XII: Creating a proper ${HOME}/.kube/config file for Armada use:"
 ### WAIT FOR KUBERNETES ENVIRONMENT TO COME UP:
-sudo mv ${HOME}/.kube/config ${HOME}/
+sudo mv ${HOME}/.kube/config /opt/demo/backups/config
 sudo kubectl config set-cluster local --server=https://${KUBE_MASTER}:${KUBE_SVC_PORT} --certificate-authority=${BOOTKUBE_DIR}/.bootkube/tls/ca.crt
 sudo kubectl config set-context default --cluster=local --user=kubelet
 sudo kubectl config use-context default

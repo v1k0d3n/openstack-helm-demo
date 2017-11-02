@@ -29,8 +29,25 @@ function echo_yellow {
 }
 
 # BRING UP INFRASTRUCTURE ITEMS:
+source /opt/demo/.bootkube_env
 echo -e -n "Bringing up MariaDB..."
-helm install --name=mariadb $HELM_REPO/mariadb --namespace=openstack
+helm install --name=mariadb ${HELM_REPO}/mariadb --namespace=openstack \
+  --set pod.replicas.server=${MARIADB_REPLICAS}
+
+### RUN VARIOUS CEPH CHECKS BEFORE CONTINUING:
+echo -e -n "Waiting for requested MariaDB containers to be in a running state..."
+while true; do
+  running_count=$(sudo kubectl --kubeconfig=/etc/kubernetes/kubeconfig get pods -n openstack --no-headers 2>/dev/null | grep "1/1" | grep "mariadb" | wc -l)
+  ### Expect all components to be out of a "ContainerCreating" state before collecting log data (this includes CrashLoopBackOff states):
+  if [ "$running_count" -ge ${MARIADB_REPLICAS} ]; then
+    break
+  fi
+  echo -n "."
+  sleep 1
+done
+echo_green "SUCCESS"
+echo_green "MARIADB READY!"
+echo ""
 
 ### BRING UP THE INFRASTRUCTURE COMPONENTS:
 #helm install --name=memcached $HELM_REPO/memcached --namespace=openstack
