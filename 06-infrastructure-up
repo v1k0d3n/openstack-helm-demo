@@ -27,6 +27,7 @@ function echo_red {
 function echo_yellow {
   echo -e "${YELLOW}$1"; tput sgr0
 }
+source .bootkube_env
 
 # BRING UP INFRASTRUCTURE ITEMS:
 source /opt/demo/.bootkube_env
