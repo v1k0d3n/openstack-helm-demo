@@ -29,60 +29,39 @@ function echo_yellow {
 }
 
 ### PREPARE THE ENVIRONMENT:
-source ./.osh_env
-echo_green "\nAdding additional variables for an OpenStack-Helm deployment:"
-printf "MARIADB_SIZE: $MARIADB_SIZE
-CEPH_RGW_KEYSTONE_ENABLED: $CEPH_RGW_KEYSTONE_ENABLED
-OSH_BRANCH: $OSH_BRANCH
-CEPH_CLUSTER_NETWORK: $CEPH_CLUSTER_NETWORK
-CEPH_PUBLIC_NETWORK: $CEPH_PUBLIC_NETWORK
-GLANCE_BACKEND: $GLANCE_BACKEND \n \n"
+source /opt/demo/.bootkube_env
+echo_yellow "\nVariables used during the storage deployment:"
+printf "HOST_SUB_CIDR: ${HOST_SUB_CIDR}
+CEPH_CLUSTER_NETWORK: ${CEPH_CLUSTER_NETWORK}
+CEPH_PUBLIC_NETWORK: ${CEPH_PUBLIC_NETWORK} \n \n"
 
 ### APPLY DEVELOPMENT RBAC POLICY:
-#kubectl update -f https://raw.githubusercontent.com/openstack/openstack-helm/master/tools/kubeadm-aio/assets/opt/rbac/dev.yaml --validate=false
+echo_yellow "\nReplacing RBAC policies for OpenStack-Helm. WARNING: SECURITY RISK!!!"
 sudo kubectl replace -f /opt/demo/deploy-rbac/demo.yaml
 
 ### PREPARE DEPENDENCIES:
-sudo apt-get install -y python-minimal ceph-common
+echo_yellow "\nInstalling Ceph host-level prerequisites:"
+pkg="python-minimal ceph-common"
 
-### DOWNLOAD: OpenStack-Helm
-git clone https://github.com/openstack/openstack-helm.git $BOOTKUBE_DIR/bootkube-ci/openstack-helm && cd $BOOTKUBE_DIR/bootkube-ci/openstack-helm && git checkout $OSH_BRANCH
+for pkg in $pkg; do
+    if sudo dpkg --get-selections | grep -q "^$pkg[[:space:]]*install$" >/dev/null; then
+        echo -e "${pkg} is already installed"
+    else
+        sudo apt-get update && sudo apt-get -qq install ${pkg}
+        echo "Successfully installed ${pkg}"
+    fi
+done
 
 ### LABEL THE NODES:
+echo_yellow "\nLabeling the nodes for the following: openstack-control-plane, ceph-mon, ceph-osd, ceph-mds, ceph-rgw"
 kubectl label nodes openstack-control-plane=enabled --all --overwrite=true
 kubectl label nodes ceph-mon=enabled --all --overwrite=true
 kubectl label nodes ceph-osd=enabled --all --overwrite=true
 kubectl label nodes ceph-mds=enabled --all --overwrite=true
 kubectl label nodes ceph-rgw=enabled --all --overwrite=true
-kubectl label nodes openvswitch=enabled --all --overwrite=true
-kubectl label nodes openstack-compute-node=enabled --all --overwrite=true
-
-### PREPARE HELM:
-helm init
-### WAIT FOR TILLER TO COME UP:
-echo -e -n "Waiting for a ready Tiller pod..."
-while true; do
-  running_count=$(sudo kubectl --kubeconfig=/etc/kubernetes/kubeconfig get pods -n kube-system --no-headers 2>/dev/null | grep "Running" | grep "tiller" | wc -l)
-  ### Expect Tiller pods to be equal or greater than 1:
-  if [ "$running_count" -ge 1 ]; then
-    break
-  fi
-  echo -n "."
-  sleep 1
-done
-echo_green "SUCCESS"
-echo_green "Tiller Ready!"
-echo ""
-
-### START HELM LOCAL REPO:
-helm serve &
-helm repo remove stable
-helm repo add $HELM_REPO "http://localhost:8879/charts"
-#sudo mkdir -p /var/lib/nova/instances
-pwd
-make
 
 ### BRING UP CEPH STORAGE:
+echo_yellow "\nInstalling the Ceph Helm chart into the ceph namespace:"
 sudo helm install --namespace=ceph $HELM_REPO/ceph --name=ceph \
   --set endpoints.identity.namespace=openstack \
   --set endpoints.object_store.namespace=ceph \
@@ -108,7 +87,9 @@ while true; do
   echo -n "."
   sleep 1
 done
-
+echo_green "SUCCESS"
+echo_green "CEPH MONITORS READY!"
+echo ""
 
 echo -e -n "Waiting for all Ceph OSDs to be in a running state..."
 while true; do
@@ -120,7 +101,9 @@ while true; do
   echo -n "."
   sleep 1
 done
-
+echo_green "SUCCESS"
+echo_green "CEPH OSDs READY!"
+echo ""
 
 echo -e -n "Waiting for all Ceph RADOS Gateway to be in a running state..."
 while true; do
@@ -132,8 +115,12 @@ while true; do
   echo -n "."
   sleep 1
 done
+echo_green "SUCCESS"
+echo_green "CEPH RGW READY!"
+echo ""
 
 ### INSTALL CEPH KEYS:
+echo_yellow "\nActivating the openstack namespace for Ceph storage:"
 sudo helm install --namespace=openstack $HELM_REPO/ceph --name=ceph-openstack-config \
   --set endpoints.identity.namespace=openstack \
   --set endpoints.object_store.namespace=ceph \
@@ -148,7 +135,7 @@ sudo helm install --namespace=openstack $HELM_REPO/ceph --name=ceph-openstack-co
   --set deployment.rgw_keystone_user_and_endpoints=false
 
 # NOTE: The following lines create the claims in ceph for Glance (images) and cinder (volumes).
-echo -e -n "Waiting for all Ceph components to be in a running state..."
+echo -e -n "Waiting for all Ceph Keys to be activated in the openstack namespace..."
 while true; do
   running_count=$(sudo kubectl --kubeconfig=/etc/kubernetes/kubeconfig get pods -n ceph --no-headers 2>/dev/null | grep "Running" | grep "ceph" | wc -l)
   ### Expect all components to be out of a "ContainerCreating" state before collecting log data (this includes CrashLoopBackOff states):
@@ -158,70 +145,7 @@ while true; do
   echo -n "."
   sleep 1
 done
+echo_green "SUCCESS"
+echo_green "OPENSTACK CEPH STORAGE READY!"
+echo ""
 exit
-
-### BRING UP THE DATABASE:
-helm install --name=mariadb $HELM_REPO/mariadb --namespace=openstack
-
-### BRING UP THE INFRASTRUCTURE COMPONENTS:
-helm install --name=memcached $HELM_REPO/memcached --namespace=openstack
-helm install --name=etcd-rabbitmq $HELM_REPO/etcd --namespace=openstack
-helm install --name=rabbitmq $HELM_REPO/rabbitmq --namespace=openstack
-helm install --name=ingress $HELM_REPO/ingress --namespace=openstack
-helm install --name=libvirt $HELM_REPO/libvirt --namespace=openstack
-helm install --name=openvswitch $HELM_REPO/openvswitch --namespace=openstack
-
-### BRING UP KEYSTONE:
-helm install --namespace=openstack --name=keystone $HELM_REPO/keystone \
-  --set pod.replicas.api=2
-
-### BRING UP KEYSTONE ENDPOINTS FOR CEPH:
-helm install --namespace=openstack $HELM_REPO/ceph --name=radosgw-openstack \
-  --set endpoints.identity.namespace=openstack \
-  --set endpoints.object_store.namespace=ceph \
-  --set endpoints.ceph_mon.namespace=ceph \
-  --set ceph.rgw_keystone_auth=${CEPH_RGW_KEYSTONE_ENABLED} \
-  --set network.public=$CEPH_PUBLIC_NETWORK \
-  --set network.cluster=$CEPH_PUBLIC_NETWORK \
-  --set deployment.storage_secrets=false \
-  --set deployment.ceph=false \
-  --set deployment.rbd_provisioner=false \
-  --set deployment.client_secrets=false \
-  --set deployment.rgw_keystone_user_and_endpoints=true
-
-### BRING UP HORIZON INTERFACE:
-helm install --namespace=openstack --name=horizon $HELM_REPO/horizon \
-  --set network.enable_node_port=true
-
-### BRING UP GLANCE:
-helm install --namespace=openstack --name=glance $HELM_REPO/glance \
-  --set pod.replicas.api=2 \
-  --set pod.replicas.registry=2
-  --set storage=$GLANCE_BACKEND
-
-### BRING UP HEAT ORCHESTRATION FOR OPENSTACK:
-helm install --namespace=openstack --name=heat $HELM_REPO/heat
-
-### BRING UP NEUTRON:
-helm install --namespace=openstack --name=neutron $HELM_REPO/neutron \
-  --set pod.replicas.server=2
-
-### BRING UP NOVA:
-helm install --namespace=openstack --name=nova $HELM_REPO/nova \
-  --set pod.replicas.api_metadata=2 \
-  --set pod.replicas.osapi=2 \
-  --set pod.replicas.conductor=2 \
-  --set pod.replicas.consoleauth=2 \
-  --set pod.replicas.scheduler=2 \
-  --set pod.replicas.novncproxy=2
-
-
-### BRING UP CINDER:
-helm install --namespace=openstack --name=cinder $HELM_REPO/cinder \
-  --set pod.replicas.api=2
-
-# Remove the exit statement if you wish any of the following Charts
-Exit
-helm install --name=barbican local/barbican --namespace=openstack
-helm install --name=mistral local/mistral --namespace=openstack
-helm install --name=magnum local/magnum --namespace=openstack

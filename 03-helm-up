@@ -28,14 +28,39 @@ function echo_yellow {
   echo -e "${YELLOW}$1"; tput sgr0
 }
 
-# BRING UP INFRASTRUCTURE ITEMS:
-echo -e -n "Bringing up MariaDB..."
-helm install --name=mariadb $HELM_REPO/mariadb --namespace=openstack
+source /opt/demo/.bootkube_env
+# VARIABLES USED:
+echo_green "\nVariables used during the Helm/Tiller deployment:"
+printf "HELM_REPO: ${HELM_REPO}
+HELM_REPO_URL: ${HELM_REPO_URL} \n \n"
 
-### BRING UP THE INFRASTRUCTURE COMPONENTS:
-helm install --name=memcached $HELM_REPO/memcached --namespace=openstack
-helm install --name=etcd-rabbitmq $HELM_REPO/etcd --namespace=openstack
-helm install --name=rabbitmq $HELM_REPO/rabbitmq --namespace=openstack
-helm install --name=ingress $HELM_REPO/ingress --namespace=openstack
-helm install --name=libvirt $HELM_REPO/libvirt --namespace=openstack
-helm install --name=openvswitch $HELM_REPO/openvswitch --namespace=openstack
+# CLEANING ANY PREVIOUS HELM/TILLER DEPLOYMENTS:
+rm -rf /home/${USER}/.helm
+pkill -f 'helm serve'
+
+# BRING UP INFRASTRUCTURE ITEMS:
+echo -e -n "Bringing up Tiller and Helm repos..."
+
+### PREPARE HELM:
+helm init
+
+### WAIT FOR TILLER TO COME UP:
+echo -e -n "Waiting for a ready Tiller pod..."
+while true; do
+  running_count=$(sudo kubectl --kubeconfig=/etc/kubernetes/kubeconfig get pods -n kube-system --no-headers 2>/dev/null | grep "Running" | grep "tiller" | wc -l)
+  ### Expect Tiller pods to be equal or greater than 1:
+  if [ "$running_count" -ge 1 ]; then
+    break
+  fi
+  echo -n "."
+  sleep 1
+done
+echo_green "SUCCESS"
+echo_green "Tiller Ready!"
+echo ""
+
+### WAIT FOR TILLER TO COME UP:
+echo -e -n "Starting the Helm server..."
+helm serve &
+sleep 2
+helm repo add ${HELM_REPO} "${HELM_REPO_URL}"

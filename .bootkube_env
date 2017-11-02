@@ -26,11 +26,11 @@ export KUBE_IMAGE='quay.io/coreos/hyperkube'  ### MODIFY FOR YOUR ENVIRONMENT  #
 export KUBE_IP=$(ip a s dev $KUBE_HW | awk '/inet /{gsub("/.*", "");print $2}')
 
 ### OPENSTACK-HELM PREPARATION:
-#!/bin/bash
-source ../.bootkube_env
 export HOST_SUB_CIDR='192.168.4.0/22'         ### HOST SUBNET CIDR            ###
+export OSH_REPO_URL="https://github.com/openstack/openstack-helm.git"
 export OSH_BRANCH=master                      ### OSH BRANCH                  ###
 export HELM_REPO=local                        ### HELM REPO TO UPLOAD CHARTS  ###
+export HELM_REPO_URL='http://localhost:8879/charts' ### HELM REPO URL         ###
 export CEPH_CLUSTER_NETWORK=${HOST_SUB_CIDR}  ### CEPH CLUSTER NETWORK        ###
 export CEPH_PUBLIC_NETWORK=${HOST_SUB_CIDR}   ### CEPH PUBLIC NETWORK         ###
 export CEPH_RGW_KEYSTONE_ENABLED=true         ### CEPH RGW ENABLED KEYSTONE   ###
