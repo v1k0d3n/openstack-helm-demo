@@ -1,6 +1,11 @@
 # Getting Started
 
 1. First, clone the repository into the /opt directory on your host.
+
+```
+git clone git@github.com:v1k0d3n/demo.git && sudo mv demo /opt/demo
+```
+
 2. Make sure that a second interface exists, and remains available for OpenStack-Helm to use. This means that the interface is up, yet not specifically configured like the "Interface Example" below.
 
 Interface Example:
