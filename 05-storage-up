@@ -37,7 +37,7 @@ CEPH_PUBLIC_NETWORK: ${CEPH_PUBLIC_NETWORK} \n \n"
 
 ### APPLY DEVELOPMENT RBAC POLICY:
 echo_yellow "\nReplacing RBAC policies for OpenStack-Helm. WARNING: SECURITY RISK!!!"
-sudo kubectl replace -f /opt/demo/deploy-rbac/demo.yaml
+kubectl replace -f /opt/demo/deploy-rbac/demo.yaml
 
 ### PREPARE DEPENDENCIES:
 echo_yellow "\nInstalling Ceph host-level prerequisites:"
@@ -62,7 +62,7 @@ kubectl label nodes ceph-rgw=enabled --all --overwrite=true
 
 ### BRING UP CEPH STORAGE:
 echo_yellow "\nInstalling the Ceph Helm chart into the ceph namespace:"
-sudo helm install --namespace=ceph $HELM_REPO/ceph --name=ceph \
+helm install --namespace=ceph $HELM_REPO/ceph --name=ceph \
   --set endpoints.identity.namespace=openstack \
   --set endpoints.object_store.namespace=ceph \
   --set endpoints.ceph_mon.namespace=ceph \
@@ -121,7 +121,7 @@ echo ""
 
 ### INSTALL CEPH KEYS:
 echo_yellow "\nActivating the openstack namespace for Ceph storage:"
-sudo helm install --namespace=openstack $HELM_REPO/ceph --name=ceph-openstack-config \
+helm install --namespace=openstack $HELM_REPO/ceph --name=ceph-openstack-config \
   --set endpoints.identity.namespace=openstack \
   --set endpoints.object_store.namespace=ceph \
   --set endpoints.ceph_mon.namespace=ceph \
