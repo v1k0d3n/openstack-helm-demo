@@ -10,10 +10,10 @@ data:
   timeout: 300
   values: {}
   source:
-    type: git
-    location: https://github.com/openstack/openstack-helm
+    type: tar
+    location: https://v1k0d3n.github.io/demo/charts/newton/helm-toolkit-3.0.3.tgz
     subpath: helm-toolkit
-    reference: 5eb51cf118f9dd2a19def9b4bf4afeec2aa3d3d7
+    reference: null
   dependencies: []
 ---
 schema: armada/Chart/v1
@@ -27,10 +27,10 @@ data:
   timeout: 300
   values: {}
   source:
-    type: git
-    location: https://github.com/larryrensing/openstack-helm
+    type: tar
+    location: https://v1k0d3n.github.io/demo/charts/newton/prometheus-3.0.3.tgz
     subpath: prometheus
-    reference: monitoring
+    reference: null
   dependencies:
     - helm-toolkit
 ---
@@ -45,10 +45,10 @@ data:
   timeout: 300
   values: {}
   source:
-    type: git
-    location: https://github.com/larryrensing/openstack-helm
+    type: tar
+    location: https://v1k0d3n.github.io/demo/charts/newton/grafana-3.0.3.tgz
     subpath: grafana
-    reference: monitoring-dash
+    reference: null
   dependencies:
     - helm-toolkit
 ---

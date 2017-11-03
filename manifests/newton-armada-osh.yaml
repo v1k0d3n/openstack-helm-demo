@@ -10,10 +10,10 @@ data:
   timeout: 300
   values: {}
   source:
-    type: git
-    location: https://github.com/openstack/openstack-helm
+    type: tar
+    location: https://v1k0d3n.github.io/demo/charts/newton/helm-toolkit-3.0.3.tgz
     subpath: helm-toolkit
-    reference: 5eb51cf118f9dd2a19def9b4bf4afeec2aa3d3d7
+    reference: null
   dependencies: []
 ---
 schema: armada/Chart/v1
@@ -31,10 +31,10 @@ data:
     no_hooks: false
   values: {}
   source:
-    type: git
-    location: https://github.com/openstack/openstack-helm
+    type: tar
+    location: https://v1k0d3n.github.io/demo/charts/newton/memcached-3.0.3.tgz
     subpath: memcached
-    reference: 5eb51cf118f9dd2a19def9b4bf4afeec2aa3d3d7
+    reference: null
   dependencies:
     - helm-toolkit
 ---
@@ -53,10 +53,10 @@ data:
     no_hooks: false
   values: {}
   source:
-    type: git
-    location: https://github.com/openstack/openstack-helm
+    type: tar
+    location: https://v1k0d3n.github.io/demo/charts/newton/etcd-3.0.3.tgz
     subpath: etcd
-    reference: 5eb51cf118f9dd2a19def9b4bf4afeec2aa3d3d7
+    reference: null
   dependencies:
     - helm-toolkit
 ---
@@ -75,10 +75,10 @@ data:
     no_hooks: false
   values: {}
   source:
-    type: git
-    location: https://github.com/openstack/openstack-helm
+    type: tar
+    location: https://v1k0d3n.github.io/demo/charts/newton/rabbitmq-3.0.3.tgz
     subpath: rabbitmq
-    reference: 5eb51cf118f9dd2a19def9b4bf4afeec2aa3d3d7
+    reference: null
   dependencies:
     - helm-toolkit
 ---
@@ -97,10 +97,10 @@ data:
     no_hooks: false
   values: {}
   source:
-    type: git
-    location: https://github.com/openstack/openstack-helm
+    type: tar
+    location: https://v1k0d3n.github.io/demo/charts/newton/ingress-3.0.3.tgz
     subpath: ingress
-    reference: 5eb51cf118f9dd2a19def9b4bf4afeec2aa3d3d7
+    reference: null
   dependencies:
     - helm-toolkit
 ---
@@ -122,10 +122,10 @@ data:
       interface:
         external: eth1
   source:
-    type: git
-    location: https://github.com/openstack/openstack-helm
+    type: tar
+    location: https://v1k0d3n.github.io/demo/charts/newton/openvswitch-3.0.3.tgz
     subpath: openvswitch
-    reference: 5eb51cf118f9dd2a19def9b4bf4afeec2aa3d3d7
+    reference: null
   dependencies:
     - helm-toolkit
 ---
@@ -144,10 +144,10 @@ data:
     no_hooks: false
   values: {}
   source:
-    type: git
-    location: https://github.com/openstack/openstack-helm
+    type: tar
+    location: https://v1k0d3n.github.io/demo/charts/newton/libvirt-3.0.3.tgz
     subpath: libvirt
-    reference: 5eb51cf118f9dd2a19def9b4bf4afeec2aa3d3d7
+    reference: null
   dependencies:
     - helm-toolkit
 ---
@@ -180,10 +180,10 @@ data:
     manifests:
       job_db_drop: true
   source:
-    type: git
-    location: https://github.com/openstack/openstack-helm
+    type: tar
+    location: https://v1k0d3n.github.io/demo/charts/newton/keystone-3.0.3.tgz
     subpath: keystone
-    reference: 5eb51cf118f9dd2a19def9b4bf4afeec2aa3d3d7
+    reference: null
   dependencies:
     - helm-toolkit
 ---
@@ -238,10 +238,10 @@ data:
         - ceph-ks-service
         - keystone-bootstrap
   source:
-    type: git
-    location: https://github.com/larryrensing/openstack-helm
+    type: tar
+    location: https://v1k0d3n.github.io/demo/charts/newton/ceph-3.0.3.tgz
     subpath: ceph
-    reference: demo
+    reference: null
   dependencies:
     - helm-toolkit
 ---
@@ -264,10 +264,10 @@ data:
     manifests:
       job_db_drop: true
   source:
-    type: git
-    location: https://github.com/openstack/openstack-helm
+    type: tar
+    location: https://v1k0d3n.github.io/demo/charts/newton/horizon-3.0.3.tgz
     subpath: horizon
-    reference: 5eb51cf118f9dd2a19def9b4bf4afeec2aa3d3d7
+    reference: null
   dependencies:
     - helm-toolkit
 ---
@@ -345,10 +345,10 @@ data:
         jobs:
         - keystone-bootstrap
   source:
-    type: git
-    location: https://github.com/openstack/openstack-helm
+    type: tar
+    location: https://v1k0d3n.github.io/demo/charts/newton/glance-3.0.3.tgz
     subpath: glance
-    reference: 5eb51cf118f9dd2a19def9b4bf4afeec2aa3d3d7
+    reference: null
   dependencies:
     - helm-toolkit
 ---
@@ -420,10 +420,10 @@ data:
         - keystone-bootstrap
         - neutron-ks-service
   source:
-    type: git
-    location: https://github.com/openstack/openstack-helm
+    type: tar
+    location: https://v1k0d3n.github.io/demo/charts/newton/neutron-3.0.3.tgz
     subpath: neutron
-    reference: 5eb51cf118f9dd2a19def9b4bf4afeec2aa3d3d7
+    reference: null
   dependencies:
     - helm-toolkit
 ---
@@ -506,10 +506,10 @@ data:
           neutron:
             project_name: demo
   source:
-    type: git
-    location: https://github.com/openstack/openstack-helm
+    type: tar
+    location:  https://v1k0d3n.github.io/demo/charts/newton/nova-3.0.3.tgz
     subpath: nova
-    reference: 5eb51cf118f9dd2a19def9b4bf4afeec2aa3d3d7
+    reference: null
   dependencies:
     - helm-toolkit
 ---
@@ -554,10 +554,10 @@ data:
         - keystone-bootstrap
         - cinder-ks-service
   source:
-    type: git
-    location: https://github.com/openstack/openstack-helm
+    type: tar
+    location: https://v1k0d3n.github.io/demo/charts/newton/cinder-3.0.3.tgz
     subpath: cinder
-    reference: 5eb51cf118f9dd2a19def9b4bf4afeec2aa3d3d7
+    reference: null
   dependencies:
     - helm-toolkit
 ---
@@ -600,10 +600,10 @@ data:
         - keystone-bootstrap
         - heat-ks-service
   source:
-    type: git
-    location: https://github.com/openstack/openstack-helm
+    type: tar
+    location:  https://v1k0d3n.github.io/demo/charts/newton/heat-3.0.3.tgz
     subpath: heat
-    reference: 5eb51cf118f9dd2a19def9b4bf4afeec2aa3d3d7
+    reference: null
   dependencies:
     - helm-toolkit
 ---

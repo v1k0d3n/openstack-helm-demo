@@ -10,10 +10,10 @@ data:
   timeout: 300
   values: {}
   source:
-    type: git
-    location: https://github.com/openstack/openstack-helm
+    type: tar
+    location: https://v1k0d3n.github.io/demo/charts/ocata/helm-toolkit-4.0.2.tgz
     subpath: helm-toolkit
-    reference: 5eb51cf118f9dd2a19def9b4bf4afeec2aa3d3d7
+    reference: null
   dependencies: []
 ---
 schema: armada/Chart/v1
@@ -31,10 +31,10 @@ data:
     no_hooks: false
   values: {}
   source:
-    type: git
-    location: https://github.com/openstack/openstack-helm
+    type: tar
+    location: https://v1k0d3n.github.io/demo/charts/ocata/memcached-4.0.2.tgz
     subpath: memcached
-    reference: 5eb51cf118f9dd2a19def9b4bf4afeec2aa3d3d7
+    reference: null
   dependencies:
     - helm-toolkit
 ---
@@ -53,10 +53,10 @@ data:
     no_hooks: false
   values: {}
   source:
-    type: git
-    location: https://github.com/openstack/openstack-helm
+    type: tar
+    location: https://v1k0d3n.github.io/demo/charts/ocata/etcd-4.0.2.tgz
     subpath: etcd
-    reference: 5eb51cf118f9dd2a19def9b4bf4afeec2aa3d3d7
+    reference: null
   dependencies:
     - helm-toolkit
 ---
@@ -75,10 +75,10 @@ data:
     no_hooks: false
   values: {}
   source:
-    type: git
-    location: https://github.com/openstack/openstack-helm
+    type: tar
+    location: https://v1k0d3n.github.io/demo/charts/ocata/rabbitmq-4.0.2.tgz
     subpath: rabbitmq
-    reference: 5eb51cf118f9dd2a19def9b4bf4afeec2aa3d3d7
+    reference: null
   dependencies:
     - helm-toolkit
 ---
@@ -97,10 +97,10 @@ data:
     no_hooks: false
   values: {}
   source:
-    type: git
-    location: https://github.com/openstack/openstack-helm
+    type: tar
+    location: https://v1k0d3n.github.io/demo/charts/ocata/ingress-4.0.2.tgz
     subpath: ingress
-    reference: 5eb51cf118f9dd2a19def9b4bf4afeec2aa3d3d7
+    reference: null
   dependencies:
     - helm-toolkit
 ---
@@ -122,10 +122,10 @@ data:
       interface:
         external: eth1
   source:
-    type: git
-    location: https://github.com/openstack/openstack-helm
+    type: tar
+    location: https://v1k0d3n.github.io/demo/charts/ocata/openvswitch-4.0.2.tgz
     subpath: openvswitch
-    reference: 5eb51cf118f9dd2a19def9b4bf4afeec2aa3d3d7
+    reference: null
   dependencies:
     - helm-toolkit
 ---
@@ -144,10 +144,10 @@ data:
     no_hooks: false
   values: {}
   source:
-    type: git
-    location: https://github.com/openstack/openstack-helm
+    type: tar
+    location: https://v1k0d3n.github.io/demo/charts/ocata/libvirt-4.0.2.tgz
     subpath: libvirt
-    reference: 5eb51cf118f9dd2a19def9b4bf4afeec2aa3d3d7
+    reference: null
   dependencies:
     - helm-toolkit
 ---
@@ -196,58 +196,10 @@ data:
     manifests:
       job_db_drop: true
   source:
-    type: git
-    location: https://github.com/larryrensing/openstack-helm
+    type: tar
+    location: https://v1k0d3n.github.io/demo/charts/ocata/keystone-4.0.2.tgz
     subpath: keystone
-    reference: testing-placement
-  dependencies:
-    - helm-toolkit
----
-schema: armada/Chart/v1
-metadata:
-  schema: metadata/Document/v1
-  name: ceph-radosgw-keystone
-data:
-  chart_name: ceph-radosgw-keystone
-  release: ceph-radosgw-keystone
-  namespace: openstack
-  timeout: 3600
-  install:
-    no_hooks: false
-  upgrade:
-    no_hooks: false
-  values:
-    endpoints:
-      identity:
-        namespace: openstack
-      object_store:
-        namespace: ceph
-      endpoints:
-        ceph_mon:
-          namespace: ceph
-    ceph:
-      rgw_keystone_auth: true
-    network:
-      public: 44.128.124.0/22
-      cluster: 44.128.124.0/22
-    deployment:
-      storage_secrets: false
-      ceph: false
-      rbd_provisioner: false
-      client_secrets: false
-      rgw_keystone_user_and_endpoints: true
-    conf:
-      ceph:
-        config:
-          global:
-            osd_pool_default_size: 1
-          osd:
-            osd_crush_chooseleaf_type: 0
-  source:
-    type: git
-    location: https://github.com/openstack/openstack-helm
-    subpath: ceph
-    reference: 5eb51cf118f9dd2a19def9b4bf4afeec2aa3d3d7
+    reference: null
   dependencies:
     - helm-toolkit
 ---
@@ -276,10 +228,10 @@ data:
     manifests:
       job_db_drop: true
   source:
-    type: git
-    location: https://github.com/openstack/openstack-helm
+    type: tar
+    location: https://v1k0d3n.github.io/demo/charts/ocata/horizon-4.0.2.tgz
     subpath: horizon
-    reference: 5eb51cf118f9dd2a19def9b4bf4afeec2aa3d3d7
+    reference: null
   dependencies:
     - helm-toolkit
 ---
@@ -333,10 +285,10 @@ data:
     manifests:
       job_db_drop: true
   source:
-    type: git
-    location: https://github.com/openstack/openstack-helm
+    type: tar
+    location: https://v1k0d3n.github.io/demo/charts/ocata/glance-4.0.2.tgz
     subpath: glance
-    reference: 5eb51cf118f9dd2a19def9b4bf4afeec2aa3d3d7
+    reference: null
   dependencies:
     - helm-toolkit
 ---
@@ -418,10 +370,10 @@ data:
     manifests:
       job_db_drop: true
   source:
-    type: git
-    location: https://github.com/openstack/openstack-helm
+    type: tar
+    location: https://v1k0d3n.github.io/demo/charts/ocata/neutron-4.0.2.tgz
     subpath: neutron
-    reference: 5eb51cf118f9dd2a19def9b4bf4afeec2aa3d3d7
+    reference: null
   dependencies:
     - helm-toolkit
 ---
@@ -520,10 +472,10 @@ data:
           neutron:
             project_name: demo
   source:
-    type: git
-    location: https://github.com/larryrensing/openstack-helm
+    type: tar
+    location: https://v1k0d3n.github.io/demo/charts/ocata/nova-4.0.2.tgz
     subpath: nova
-    reference: testing-placement
+    reference: null
   dependencies:
     - helm-toolkit
 ---
@@ -578,10 +530,10 @@ data:
       job_db_drop: true
       deployment_backup: false
   source:
-    type: git
-    location: https://github.com/openstack/openstack-helm
+    type: tar
+    location: https://v1k0d3n.github.io/demo/charts/ocata/cinder-4.0.2.tgz
     subpath: cinder
-    reference: 5eb51cf118f9dd2a19def9b4bf4afeec2aa3d3d7
+    reference: null
   dependencies:
     - helm-toolkit
 ---
@@ -622,10 +574,10 @@ data:
     manifests:
       job_db_drop: true
   source:
-    type: git
-    location: https://github.com/openstack/openstack-helm
+    type: tar
+    location: https://v1k0d3n.github.io/demo/charts/ocata/heat-4.0.2.tgz
     subpath: heat
-    reference: 5eb51cf118f9dd2a19def9b4bf4afeec2aa3d3d7
+    reference: null
   dependencies:
     - helm-toolkit
 ---

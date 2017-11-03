@@ -54,6 +54,6 @@ POSTACTION_POD=$(kubectl get -n openstack pods -l application=nova,component=os-
 kubectl exec -n openstack ${POSTACTION_POD} -- nova-manage cell_v2 discover_hosts
 
 sudo chown -R 42436:42436 /var/lib/nova/
-for node in $(cat $HOME/charter-nfv-demo/bootkube-ci/deploy-node/nodes); do
+for node in $(cat /opt/demo/deploy-node/nodes); do
   ssh -tq ${node} "sudo chown -R 42436:42436 /var/lib/nova";
 done
