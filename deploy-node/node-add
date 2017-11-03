@@ -30,19 +30,19 @@ function echo_yellow {
 
 ls -asl
 
-source .bootkube_env
+source /opt/demo/.bootkube_env
 
 ##  USE ONLY IN CASES WHERE HOST ALREADY NOT DEFINED IN /etc/hosts:
 ### Add IP Address of Hosts in /etc/hosts:
-#HOST_IFACE=$(ip route | grep "^default" | head -1 | awk '{ print $5 }')
-#LOCAL_IP=$(ip addr | awk "/inet/ && /${HOST_IFACE}/{sub(/\/.*$/,\"\",\$2); print \$2}")
-#cat << EOF | sudo tee -a /etc/hosts
-#${LOCAL_IP} $(hostname)
-#EOF
+HOST_IFACE=$(ip route | grep "^default" | head -1 | awk '{ print $5 }')
+LOCAL_IP=$(ip addr | awk "/inet/ && /${HOST_IFACE}/{sub(/\/.*$/,\"\",\$2); print \$2}")
+cat << EOF | sudo tee -a /etc/hosts
+${LOCAL_IP} $(hostname)
+EOF
 
 ### NEW INSTALLATIONS:
 echo_green "\nPhase I: Installing system prerequisites:"
-pkg="build-essential curl docker.io ethtool git lldpd socat traceroute vim ceph-common"
+pkg="build-essential curl docker.io ethtool git lldpd socat traceroute vim ceph-common nfs-common"
 
 for pkg in ${pkg}; do
     if sudo dpkg --get-selections | grep -q "^${pkg}[[:space:]]*install$" >/dev/null; then
@@ -56,7 +56,7 @@ done
 
 ### PREPARE: /etc/resolv.conf
 echo_green "\nPhase III: Preparing system DNS:"
-sudo cp /etc/resolv.conf ${BOOTKUBE_DIR}/bootkube-ci/backups/
+sudo cp /etc/resolv.conf ${BOOTKUBE_DIR}/backups/
 
 ### PREPARE: /etc/resolv.conf
 sudo -E bash -c "cat <<EOF > /etc/resolvconf/resolv.conf.d/head
@@ -75,6 +75,7 @@ if [ ! -e /usr/local/bin/hostess ]; then
     sudo wget -O /usr/local/bin/hostess https://github.com/cbednarski/hostess/releases/download/v0.2.0/hostess_linux_${KUBE_ARCH}
     sudo chmod +x /usr/local/bin/hostess
 fi
+sudo hostess fix
 sudo hostess add ${KUBE_DNS_API} ${KUBE_MASTER}
 sudo hostess add kubernetes ${KUBE_MASTER}
 sudo hostess fix
@@ -131,15 +132,11 @@ fi
 
 ### DEPLOY KUBERNETES SELF-HOSTED CLUSTER:
 echo_green "\nPhase VIII: Preparing the environment for Kubernetes to run for the first time:"
-
-sudo hostess add ${KUBE_DNS_API} ${KUBE_MASTER}
-sudo hostess add kubernetes ${KUBE_MASTER}
-sudo hostess fix
-
 sudo systemctl daemon-reload
+echo_yellow "\nEnabling and restarting the kubelet service..."
 sudo systemctl enable kubelet.service
 sudo systemctl restart kubelet.service
-
-cd ${BOOTKUBE_DIR}
-sudo cp bootkube-ci/kubeconfig /etc/kubernetes/
-sudo cp bootkube-ci/ca.crt /etc/kubernetes/
+echo_yellow "\nCopying the kubelet config..."
+sudo cp ${BOOTKUBE_DIR}/kubeconfig /etc/kubernetes/
+echo_yellow "\nCopying the kubelet certificate..."
+sudo cp ${BOOTKUBE_DIR}/ca.crt /etc/kubernetes/

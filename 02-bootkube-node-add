@@ -37,7 +37,7 @@ for node in $(cat ./deploy-node/nodes); do
   ssh -tq ${node} "sudo mv ${HOME}/demo ${BOOTKUBE_DIR}";
   echo -e "Copying Kubernetes node files to ${node}...";
   scp ${BOOTKUBE_DIR}/deploy-node/node-add ${node}:${BOOTKUBE_DIR};
-  scp ${BOOTKUBE_DIR}/clean-kubernetes ${node}:${BOOTKUBE_DIR};
+  scp ${BOOTKUBE_DIR}/clean-kube-gen ${node}:${BOOTKUBE_DIR};
   scp ${BOOTKUBE_DIR}/.bootkube_env ${node}:${BOOTKUBE_DIR};
   scp ${BOOTKUBE_DIR}/.bootkube/tls/ca.crt ${node}:${BOOTKUBE_DIR};
   scp ${BOOTKUBE_DIR}/.bootkube/auth/kubeconfig ${node}:${BOOTKUBE_DIR};
