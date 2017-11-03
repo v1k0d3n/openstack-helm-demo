@@ -35,8 +35,8 @@ export CEPH_CLUSTER_NETWORK=${HOST_SUB_CIDR}  ### CEPH CLUSTER NETWORK        ##
 export CEPH_PUBLIC_NETWORK=${HOST_SUB_CIDR}   ### CEPH PUBLIC NETWORK         ###
 export CEPH_RGW_KEYSTONE_ENABLED=true         ### CEPH RGW ENABLED KEYSTONE   ###
 export MARIADB_SIZE=15Gi                      ### MARIADB PVC SIZE            ###
-export MARIADB_REPLICAS=1                     ### MARIADB REPLICA_COUNT       ###
-export RABBITMQ_REPLICAS=1                    ### RABBITMQ REPLICA COUNT      ###
+export MARIADB_REPLICAS=3                     ### MARIADB REPLICA_COUNT       ###
+export RABBITMQ_REPLICAS=3                    ### RABBITMQ REPLICA COUNT      ###
 export OVS_EXTERNAL_IFACE=eth1                ### OPENVSWITCH EXT IFACE       ###
 export GLANCE_BACKEND=radosgw                 ### GLANCE BACKEND OPTIONS      ###
 
