@@ -41,5 +41,5 @@ nsComment            = "OpenSSL Generated Certificate"
 ####################################################################
 [ alternate_names ]
 
-DNS.1  = controller02
-IP.1   = 44.128.124.166
+DNS.1  = SERVER_FQDN
+IP.1   = HOST_IP

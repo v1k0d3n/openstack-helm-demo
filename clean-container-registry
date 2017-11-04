@@ -31,17 +31,13 @@ function echo_yellow {
 HOST_IP=$(ip route get 1 | awk '{print $NF;exit}')
 FQDN=$(hostname --fqdn)
 
-cd harbor
+sed -i '/DNS.1/d' certs/openssl-server.cnf
 
-sudo docker-compose down -v --remove-orphans --rmi all
+sed -i '/IP.1/d' certs/openssl-server.cnf
 
-cd ..
+echo "DNS.1  = SERVER_FQDN" >> certs/openssl-server.cnf
 
-sudo rm -rf /etc/docker/certs.d/$FQDN/
-
-sudo rm -rf /etc/docker/certs.d/$HOST_IP/
-
-sudo rm -rf /data
+echo "IP.1   = HOST_IP" >> certs/openssl-server.cnf
 
 rm certs/*pem
 
@@ -53,6 +49,19 @@ rm certs/*.attr
 
 rm certs/*.old
 
+sudo rm -rf /etc/docker/certs.d/$FQDN/
+
+sudo rm -rf /etc/docker/certs.d/$HOST_IP/
+
+cd harbor
+
+sudo docker-compose down -v --remove-orphans --rmi all
+
+cd ..
+
+sudo rm -rf /data
+
 sudo docker rmi $HOST_IP/library/ubuntu:latest
 
 sudo rm -rf harbor
+
