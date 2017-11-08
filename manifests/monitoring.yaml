@@ -23,9 +23,14 @@ metadata:
 data:
   chart_name: prometheus
   release: prometheus
-  namespace: monitoring
+  namespace: default
   timeout: 300
-  values: {}
+  values:
+    storage:
+      alertmanager:
+        storage_class: default
+      prometheus:
+        storage_class: default
   source:
     type: tar
     location: https://v1k0d3n.github.io/demo/charts/newton/prometheus-3.0.3.tgz
@@ -41,7 +46,7 @@ metadata:
 data:
   chart_name: grafana
   release: grafana
-  namespace: monitoring
+  namespace: default
   timeout: 300
   values: {}
   source:

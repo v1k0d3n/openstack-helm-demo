@@ -74,6 +74,8 @@ helm install --namespace=ceph $HELM_REPO/ceph --name=ceph \
   --set deployment.rbd_provisioner=true \
   --set deployment.client_secrets=false \
   --set deployment.rgw_keystone_user_and_endpoints=false \
+  --set conf.ceph.config.global.osd_pool_default_pg_num=16 \
+  --set conf.ceph.config.global.osd_pool_default_pgp_num=16 \
   --set bootstrap.enabled=true
 
 ### RUN VARIOUS CEPH CHECKS BEFORE CONTINUING:
