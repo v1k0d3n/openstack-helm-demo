@@ -41,6 +41,7 @@ for node in $(cat ./deploy-node/nodes); do
   scp ${BOOTKUBE_DIR}/.bootkube_env ${node}:${BOOTKUBE_DIR};
   scp ${BOOTKUBE_DIR}/.bootkube/tls/ca.crt ${node}:${BOOTKUBE_DIR};
   scp ${BOOTKUBE_DIR}/.bootkube/auth/kubeconfig ${node}:${BOOTKUBE_DIR};
+  scp ${BOOTKUBE_DIR}/video.cfg ${node}:${BOOTKUBE_DIR};
   echo -e "Attempting to deploy ${node} as a worker node...";
   ssh -tq ${node} "cd ${BOOTKUBE_DIR}/ && \
     sudo chown root:root ${BOOTKUBE_DIR}/kubeconfig && \

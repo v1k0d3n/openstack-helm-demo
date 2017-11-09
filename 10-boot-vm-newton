@@ -42,13 +42,18 @@ $OS_CMD security group rule create $OS_SEC_GROUP \
   --protocol tcp \
   --dst-port 22:22 \
   --src-ip 0.0.0.0/0
+$OS_CMD security group rule create $OS_SEC_GROUP \
+  --protocol tcp \
+  --dst-port 80:80 \
+  --src-ip 0.0.0.0/0
+
 
 TEST_KEY="$(mktemp).pem"
 $OS_CMD keypair create "ctec-test" > $TEST_KEY
 chmod 600 $TEST_KEY
 
 VM_FLAVOR_ID=$($OS_CMD flavor show "vnf.small" -f value -c id)
-VM_IMAGE_ID=$($OS_CMD image list -f csv | awk -F ',' '{ print $2 "," $1 }' | grep "^\"Cirros" | head -1 | awk -F ',' '{ print $2 }' | tr -d '"')
+VM_IMAGE_ID=$($OS_CMD image list -f csv | awk -F ',' '{ print $2 "," $1 }' | grep "^\"Ubuntu" | head -1 | awk -F ',' '{ print $2 }' | tr -d '"')
 NETWORK_ID=$($OS_CMD network show provider-482 -f value -c id)
 
 $OS_CMD server create --nic net-id=$NETWORK_ID \
@@ -56,6 +61,7 @@ $OS_CMD server create --nic net-id=$NETWORK_ID \
   --image=$VM_IMAGE_ID \
   --key-name="ctec-test" \
   --security-group=$OS_SEC_GROUP \
+  --user-data=/tmp/config/video.cfg \
   "ctec-vm"
 
 VM_ID=$($OS_CMD server list -f value -c ID)
@@ -64,7 +70,3 @@ VM_IP=$($OS_CMD server show $VM_ID -f value -c addresses | cut -f2 -d=)
 sleep 20
 
 ssh-keyscan $VM_IP >> ~/.ssh/known_hosts
-
-ssh -i $TEST_KEY cirros@$VM_IP ping -q -c 1 -W 2 www.google.com
-
-ssh -i $TEST_KEY cirros@$VM_IP curl http://artscene.textfiles.com/asciiart/unicorn || true

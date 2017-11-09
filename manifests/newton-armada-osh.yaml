@@ -301,11 +301,11 @@ data:
           properties:
             hypervisor_type: "qemu"
             os_distro: "cirros"
-        ubuntu_precise64:
+        ubuntu_xenial64:
           id: null
-          name: "Ubuntu Precise 64-bit"
-          source_url: "http://cloud-images.ubuntu.com/precise/current/"
-          image_file: "precise-server-cloudimg-amd64-disk1.img"
+          name: "Ubuntu Xenial 64-bit"
+          source_url: "http://cloud-images.ubuntu.com/xenial/current/"
+          image_file: "xenial-server-cloudimg-amd64-disk1.img"
           min_disk: 20
           image_type: qcow2
           container_format: bare
@@ -582,7 +582,7 @@ data:
             volumes:
                - name: cloud-config
                  hostPath:
-                   path: /home/dev/charter-nfv-demo/scripts/openstack/
+                   path: /opt/demo
             volumeMounts:
                - name: cloud-config
                  mountPath: /tmp/config
