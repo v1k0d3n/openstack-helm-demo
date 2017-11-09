@@ -31,6 +31,8 @@ function echo_yellow {
 HOST_IP=$(ip route get 1 | awk '{print $NF;exit}')
 FQDN=$(hostname --fqdn)
 
+cd /opt/demo/projects/
+
 sed -i '/DNS.1/d' certs/openssl-server.cnf
 
 sed -i '/IP.1/d' certs/openssl-server.cnf

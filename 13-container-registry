@@ -31,13 +31,15 @@ function echo_yellow {
 HOST_IP=$(ip route get 1 | awk '{print $NF;exit}')
 FQDN=$(hostname --fqdn)
 
-source .bootkube_env
+source /opt/demo/.bootkube_env
 
 echo_green "Installing Docker Compose"
 
-sudo apt install docker-compose
+sudo apt install docker-compose -y
 
 echo_green "Downloading and Extracting Harbor Container Registry"
+
+cd /opt/demo/projects
 
 wget https://github.com/vmware/harbor/releases/download/v1.2.2/harbor-online-installer-v1.2.2.tgz
 
@@ -57,7 +59,7 @@ sed -i '/^verify/ s/on/off/' harbor/harbor.cfg
 
 echo_green "Generating Self-signed SSL Certificates"
 
-cd certs
+cd /opt/demo/projects/certs
 
 sed -i "s/SERVER_FQDN/$FQDN/" openssl-server.cnf
 sed -i "s/HOST_IP/$HOST_IP/" openssl-server.cnf
@@ -92,7 +94,7 @@ cd ..
 
 echo_green "Installing Harbor with Clair and Notary"
 
-sudo ./harbor/install.sh --with-clair --with-notary
+sudo ./opt/demo/projects/harbor/install.sh --with-clair --with-notary
 
 
 echo_green "Pushing Images to Registry"
@@ -101,6 +103,6 @@ sudo docker login $HOST_IP
 
 sudo docker pull ubuntu:latest
 
-sudo docker tag dd6f76d9cc90 $HOST_IP/library/ubuntu:latest
+sudo docker tag ubuntu:latest $HOST_IP/library/ubuntu:latest
 
 sudo docker push $HOST_IP/library/ubuntu:latest
