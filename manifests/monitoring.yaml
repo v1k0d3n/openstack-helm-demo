@@ -23,7 +23,7 @@ metadata:
 data:
   chart_name: prometheus
   release: prometheus
-  namespace: default
+  namespace: openstack
   timeout: 300
   values:
     storage:
@@ -46,7 +46,7 @@ metadata:
 data:
   chart_name: grafana
   release: grafana
-  namespace: default
+  namespace: openstack
   timeout: 300
   values: {}
   source:
