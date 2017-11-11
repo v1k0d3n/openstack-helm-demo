@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright 2017 The Bootkube-CI Authors.
+# Copyright 2017 Charter DNA Team (CTEC).
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -51,11 +51,3 @@ done
 echo_green "SUCCESS"
 echo_green "MARIADB READY!"
 echo ""
-
-### BRING UP THE INFRASTRUCTURE COMPONENTS:
-#helm install --name=memcached $HELM_REPO/memcached --namespace=openstack
-#helm install --name=etcd-rabbitmq $HELM_REPO/etcd --namespace=openstack
-#helm install --name=rabbitmq $HELM_REPO/rabbitmq --namespace=openstack
-#helm install --name=ingress $HELM_REPO/ingress --namespace=openstack
-#helm install --name=libvirt $HELM_REPO/libvirt --namespace=openstack
-#helm install --name=openvswitch $HELM_REPO/openvswitch --namespace=openstack
