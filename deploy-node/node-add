@@ -136,7 +136,9 @@ sudo systemctl daemon-reload
 echo_yellow "\nEnabling and restarting the kubelet service..."
 sudo systemctl enable kubelet.service
 sudo systemctl restart kubelet.service
+sudo service docker restart
 echo_yellow "\nCopying the kubelet config..."
 sudo cp ${BOOTKUBE_DIR}/kubeconfig /etc/kubernetes/
 echo_yellow "\nCopying the kubelet certificate..."
 sudo cp ${BOOTKUBE_DIR}/ca.crt /etc/kubernetes/
+echo_green "\nCOMPLETE! ${HOSTNAME} has been added to the cluster."

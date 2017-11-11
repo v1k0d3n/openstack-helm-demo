@@ -34,5 +34,5 @@ source /opt/demo/.bootkube_env
 for node in $(cat /opt/demo/deploy-node/nodes); do
   echo -e "Cleaning $node:"
   ssh -tq $node "cd ${BOOTKUBE_DIR} && \
-    ./clean-kube-gen";
+    ./clean-kube-wipe";
 done

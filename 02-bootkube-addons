@@ -30,31 +30,37 @@ function echo_yellow {
 
 source /opt/demo/.bootkube_env
 
-# BRING UP INFRASTRUCTURE ITEMS:
-source /opt/demo/.bootkube_env
-echo -e -n "Bringing up MariaDB..."
-helm install --name=mariadb ${HELM_REPO}/mariadb --namespace=openstack \
-  --set pod.replicas.server=${MARIADB_REPLICAS}
+echo_yellow "\nDeploying Heapster add-on for Kubernetes:"
+kubectl apply -f https://raw.githubusercontent.com/charter-ctec/charter-nfv-demo/master/scripts/kubernetes/manifests/heapster.yaml
 
-### RUN VARIOUS CEPH CHECKS BEFORE CONTINUING:
-echo -e -n "Waiting for requested MariaDB containers to be in a running state..."
+echo -e -n "Waiting for Heapster deployment to complete..."
 while true; do
-  running_count=$(sudo kubectl --kubeconfig=/etc/kubernetes/kubeconfig get pods -n openstack --no-headers 2>/dev/null | grep "1/1" | grep "mariadb" | wc -l)
+  running_count=$(kubectl get pods -n kube-system --no-headers 2>/dev/null | grep "1/1" | grep "heapster" | wc -l)
   ### Expect all components to be out of a "ContainerCreating" state before collecting log data (this includes CrashLoopBackOff states):
-  if [ "$running_count" -ge ${MARIADB_REPLICAS} ]; then
+  if [ "$running_count" -ge 1 ]; then
     break
   fi
   echo -n "."
   sleep 1
 done
-echo_green "SUCCESS"
-echo_green "MARIADB READY!"
+echo_green "HEAPSTER ADD-ON READY!"
 echo ""
 
-### BRING UP THE INFRASTRUCTURE COMPONENTS:
-#helm install --name=memcached $HELM_REPO/memcached --namespace=openstack
-#helm install --name=etcd-rabbitmq $HELM_REPO/etcd --namespace=openstack
-#helm install --name=rabbitmq $HELM_REPO/rabbitmq --namespace=openstack
-#helm install --name=ingress $HELM_REPO/ingress --namespace=openstack
-#helm install --name=libvirt $HELM_REPO/libvirt --namespace=openstack
-#helm install --name=openvswitch $HELM_REPO/openvswitch --namespace=openstack
+echo_yellow "\nDeploying InfluxDB add-on for Kubernetes:"
+kubectl apply -f https://raw.githubusercontent.com/charter-ctec/charter-nfv-demo/master/scripts/kubernetes/manifests/influxdb.yaml
+
+echo -e -n "Waiting for InfluxDB deployment to complete..."
+while true; do
+  running_count=$(kubectl get pods -n kube-system --no-headers 2>/dev/null | grep "1/1" | grep "influxdb" | wc -l)
+  ### Expect all components to be out of a "ContainerCreating" state before collecting log data (this includes CrashLoopBackOff states):
+  if [ "$running_count" -ge 1 ]; then
+    break
+  fi
+  echo -n "."
+  sleep 1
+done
+echo_green "INFLUX ADD-ON READY!"
+echo ""
+
+echo_green "\nList of deployed Kubernetes add-ons:"
+kubectl cluster-info

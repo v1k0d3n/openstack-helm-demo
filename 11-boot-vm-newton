@@ -35,6 +35,8 @@ OS_CMD="kubectl exec -n openstack ${OS_TOOLKIT} -- openstack ${KEYSTONE_CREDS} -
 OS_PROJECT=$($OS_CMD project show ctec -f value -c id)
 OS_SEC_GROUP=$($OS_CMD security group list -f csv | grep $OS_PROJECT | grep "default" | awk -F "," '{ print $1 }'  | tr -d '"')
 
+kubectl cp /opt/demo/video.cfg openstack/$OS_TOOLKIT:/tmp/video.cfg
+
 $OS_CMD security group rule create $OS_SEC_GROUP \
   --protocol icmp \
   --src-ip 0.0.0.0/0
@@ -61,7 +63,7 @@ $OS_CMD server create --nic net-id=$NETWORK_ID \
   --image=$VM_IMAGE_ID \
   --key-name="ctec-test" \
   --security-group=$OS_SEC_GROUP \
-  --user-data=/tmp/config/video.cfg \
+  --user-data=/tmp/video.cfg \
   "ctec-vm"
 
 VM_ID=$($OS_CMD server list -f value -c ID)

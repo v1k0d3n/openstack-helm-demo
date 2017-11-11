@@ -28,23 +28,23 @@ function echo_yellow {
   echo -e "${YELLOW}$1"; tput sgr0
 }
 
-source .bootkube_env
+source /opt/demo/.bootkube_env
 
 ## NEW INSTALLATIONS:
-for node in $(cat ./deploy-node/nodes); do
-  echo -e "Creating demo directory on ${node} in...";
+for node in $(cat /opt/demo/deploy-node/nodes); do
+  echo_yellow "\nCreating demo directory on ${node} in...";
   ssh -o "StrictHostKeyChecking no" -tq ${node} "mkdir ${HOME}/demo";
   ssh -tq ${node} "sudo mv ${HOME}/demo ${BOOTKUBE_DIR}";
-  echo -e "Copying Kubernetes node files to ${node}...";
+  echo_yellow "\nCopying Kubernetes node files to ${node}...";
   scp ${BOOTKUBE_DIR}/deploy-node/node-add ${node}:${BOOTKUBE_DIR};
-  scp ${BOOTKUBE_DIR}/clean-kube-gen ${node}:${BOOTKUBE_DIR};
+  scp ${BOOTKUBE_DIR}/clean-kube-wipe ${node}:${BOOTKUBE_DIR};
   scp ${BOOTKUBE_DIR}/.bootkube_env ${node}:${BOOTKUBE_DIR};
   scp ${BOOTKUBE_DIR}/.bootkube/tls/ca.crt ${node}:${BOOTKUBE_DIR};
   scp ${BOOTKUBE_DIR}/.bootkube/auth/kubeconfig ${node}:${BOOTKUBE_DIR};
-  scp ${BOOTKUBE_DIR}/video.cfg ${node}:${BOOTKUBE_DIR};
-  echo -e "Attempting to deploy ${node} as a worker node...";
+  echo_yellow "\nAttempting to deploy ${node} as a worker node...";
   ssh -tq ${node} "cd ${BOOTKUBE_DIR}/ && \
     sudo chown root:root ${BOOTKUBE_DIR}/kubeconfig && \
     sudo mkdir -p ${BOOTKUBE_DIR}/backups/ && \
     ./node-add";
+  echo_green "\n${node} has been added to the Kubernetes Master at ${KUBE_MASTER}!"
 done

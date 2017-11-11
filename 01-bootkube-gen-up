@@ -50,6 +50,8 @@ done
 
 
 ### PREPARE THE ENVIRONMENT:
+sudo service docker restart
+sudo service docker enable
 source /opt/demo/.bootkube_env
 echo "export KUBE_MASTER=${KUBE_IP}" >> .bootkube_env
 source /opt/demo/.bootkube_env
