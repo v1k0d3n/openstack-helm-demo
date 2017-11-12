@@ -58,5 +58,4 @@ export OS_SVC_USERNAME=demo                   ### OPENSTACK SVC USERNAME      ##
 export OS_SVC_PASSWORD=password               ### OPENSTACK SVC PASSWORD      ###
 
 # CONTAINER REGISTRY PREPARATION
-
 export REGISTRY_ADMIN_PASSWORD=password

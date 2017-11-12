@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright 2017 The Bootkube-CI Authors.
+# Copyright 2017 Charter DNA Team (CTEC).
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -50,6 +50,8 @@ done
 
 
 ### PREPARE THE ENVIRONMENT:
+sudo service docker restart
+sudo service docker enable
 source /opt/demo/.bootkube_env
 echo "export KUBE_MASTER=${KUBE_IP}" >> .bootkube_env
 source /opt/demo/.bootkube_env

@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright 2017 The Bootkube-CI Authors.
+# Copyright 2017 Charter DNA Team (CTEC).
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -30,21 +30,12 @@ function echo_yellow {
 
 source /opt/demo/.bootkube_env
 
-sudo chmod 755 $HOME/.kube/config
-sudo chmod 755 $BOOTKUBE_DIR/.bootkube/tls/*
+echo_yellow "\nCleaning any potential stale jobs before launching Armada deployment:"
+export job_array=`(kubectl get jobs -n openstack | (awk -F"," '{print $1}') | (cut -d' ' -f1) | (sed '1d') | (awk '/[^[:upper:] ]/') | grep -v ceph)`
+for job in $job_array;do
+ `kubectl delete job $job -n openstack`
+done
 
-echo 'Removing any old or stale Armada deployment:'
-sudo docker rm -f armada
-
-echo 'Launching OSH using Armada'
-#helm init
-sudo docker run -d --net host \
-  --privileged=true --name armada \
-  -v /opt/demo/.bootkube/tls:/opt/demo/.bootkube/tls \
-  -v /home/${USER}/.kube/config:/armada/.kube/config \
-  -v /opt/demo/manifests:/examples \
-  quay.io/charter-ctec/armada:v0.7.1
-
-alias armada="sudo docker exec armada armada"
-sleep 3
+echo_yellow "\nUsing Armada to deploy OpenStack Newton release:"
 sudo docker exec armada armada tiller --status
+sudo docker exec armada armada apply /examples/newton-armada-osh.yaml

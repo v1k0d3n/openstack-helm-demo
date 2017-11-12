@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright 2017 The Bootkube-CI Authors.
+# Copyright 2017 Charter DNA Team (CTEC).
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -37,6 +37,13 @@ helm delete --purge osh-etcd
 helm delete --purge osh-libvirt
 helm delete --purge osh-openvswitch
 helm delete --purge osh-memcached
+helm delete --purge ctec-grafana
+helm delete --purge ctec-prometheus
+helm delete --purge ceph-monitoring-config
+
+echo_yellow "\nDELETING MONITORING PVC's:"
+kubectl delete pvc/alertmanager-pvc
+kubectl delete pvc/prometheus-pvc
 
 echo_yellow "\nDELETING OPENSTACK COMPONENTS:"
 helm delete --purge osh-horizon &
@@ -68,6 +75,11 @@ sleep 5
 kubectl delete jobs/`(kubectl get jobs -n openstack | grep nova-clean | cut -d " " -f1)` -n openstack
 kubectl delete jobs/`(kubectl get jobs -n openstack | grep nova-db-drop | cut -d " " -f1)` -n openstack
 
+echo_yellow "\nDELETING ANY REMAINING CRONJOBS:"
+kubectl delete cronjob/`(kubectl get cronjob -n openstack | grep keystone-credential | cut -d " " -f1)` -n openstack
+kubectl delete cronjob/`(kubectl get cronjob -n openstack | grep keystone-fernet | cut -d " " -f1)` -n openstack
+kubectl delete cronjob/`(kubectl get cronjob -n openstack | grep cinder | cut -d " " -f1)` -n openstack
+
 echo_yellow "\nDELETING DATABASE COMPONENTS:"
 kubectl delete pvc mysql-data-mariadb-0 -n openstack
 kubectl delete pvc mysql-data-mariadb-1 -n openstack
@@ -86,15 +98,6 @@ helm delete --purge ceph-openstack-config
 helm delete --purge ceph
 sudo rm -rf /var/lib/openstack-helm/ceph
 
-#echo_yellow "\nDELETING DATABASE COMPONENTS:"
-#kubectl delete pvc mysql-data-mariadb-0 -n openstack
-#kubectl delete pvc mysql-data-mariadb-1 -n openstack
-#kubectl delete pvc mysql-data-mariadb-2 -n openstack
-#kubectl delete po/mariadb-0 --grace-period=0 --force -n openstack
-#kubectl delete po/mariadb-1 --grace-period=0 --force -n openstack
-#kubectl delete po/mariadb-2 --grace-period=0 --force -n openstack
-#helm delete --purge mariadb
-
 echo_yellow "\nDELETING DEMO NAMESPACES:"
 kubectl delete namespace openstack
 kubectl delete namespace ceph
@@ -105,3 +108,5 @@ helm delete --purge default-nfs
 echo_yellow "\nDELETING OPENSTACK-HELM LOCAL STORAGE DIRS:"
 sudo rm -rf /var/lib/openstack-helm/nfs
 sudo rm -rf /var/lib/openstack-helm/*
+
+echo_green "\nDONE!"

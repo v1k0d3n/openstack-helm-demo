@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright 2017 The Bootkube-CI Authors.
+# Copyright 2017 Charter DNA Team (CTEC).
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -30,12 +30,24 @@ function echo_yellow {
 
 source /opt/demo/.bootkube_env
 
-echo_yellow "\nCleaning any potential stale jobs before launching Armada deployment:"
-export job_array=`(kubectl get jobs -n openstack | (awk -F"," '{print $1}') | (cut -d' ' -f1) | (sed '1d') | (awk '/[^[:upper:] ]/') | grep -v ceph)`
-for job in $job_array;do
- `kubectl delete job $job -n openstack`
-done
+# BRING UP INFRASTRUCTURE ITEMS:
+source /opt/demo/.bootkube_env
+echo -e -n "Bringing up MariaDB..."
+helm install --name=mariadb ${HELM_REPO}/mariadb --namespace=openstack \
+  --set volume.size=${MARIADB_SIZE} \
+  --set pod.replicas.server=${MARIADB_REPLICAS}
 
-echo_yellow "\nUsing Armada to deploy OpenStack Newton release:"
-sudo docker exec armada armada tiller --status
-sudo docker exec armada armada apply /examples/newton-armada-osh.yaml
+### RUN VARIOUS CEPH CHECKS BEFORE CONTINUING:
+echo -e -n "Waiting for requested MariaDB containers to be in a running state..."
+while true; do
+  running_count=$(sudo kubectl --kubeconfig=/etc/kubernetes/kubeconfig get pods -n openstack --no-headers 2>/dev/null | grep "1/1" | grep "mariadb" | wc -l)
+  ### Expect all components to be out of a "ContainerCreating" state before collecting log data (this includes CrashLoopBackOff states):
+  if [ "$running_count" -ge ${MARIADB_REPLICAS} ]; then
+    break
+  fi
+  echo -n "."
+  sleep 1
+done
+echo_green "SUCCESS"
+echo_green "MARIADB READY!"
+echo ""

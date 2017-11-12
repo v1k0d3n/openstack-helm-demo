@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright 2017 The Bootkube-CI Authors.
+# Copyright 2017 Charter DNA Team (CTEC).
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -30,12 +30,14 @@ function echo_yellow {
 }
 
 source /opt/demo/.bootkube_env
-echo_red "\nWARNING!!! Removing entire Kubernetes environment from system..."
-{ sudo systemctl stop kubelet.service
+echo_red "\nWARNING!!! Removing entire Kubernetes environment from ${HOSTNAME}..."
+  sudo systemctl stop kubelet.service
   sudo systemctl disable kubelet.service
   sudo systemctl restart docker
   sudo docker stop $(sudo docker ps -a | grep k8s| cut -c1-20 | xargs sudo docker stop)
   sudo docker rm -f $(sudo docker ps -a | grep k8s| cut -c1-20 | xargs sudo docker stop)
+  sudo systemctl stop docker
+  sudo systemctl disable docker
   sudo rm -rf /etc/kubernetes/
   sudo rm -rf /var/etcd
   sudo rm -rf /var/run/calico
@@ -46,27 +48,27 @@ echo_red "\nWARNING!!! Removing entire Kubernetes environment from system..."
   sudo rm -rf /var/run/lock/api-server.lock
   sudo rm -rf /var/run/lock/etcd.lock
   sudo rm -rf /var/run/lock/pod-checkpointer.lock
-  sudo rm -rf $BOOTKUBE_DIR/log/cluster-info*
-  sudo rm -rf $BOOTKUBE_DIR/.bootkube
+  sudo rm -rf /opt/demo/log/cluster-info*
+  sudo rm -rf /opt/demo/.bootkube
   sudo ip link set flannel.1 down
   sudo hostess del ${KUBE_DNS_API} ${KUBE_MASTER}
   sudo hostess del kubernetes ${KUBE_MASTER}
-  sudo cp $BOOTKUBE_DIR/backups/resolv.conf /etc/resolv.conf
+  sudo cp /opt/demo/backups/resolv.conf /etc/resolv.conf
   sudo rm -rf /var/lib/ceph/* /var/lib/openstack-helm/*
   ### These can optionally be enabled, but a menu is soon to come to clean up the following binaries:
-  sudo rm -rf /usr/local/bin/bootkube
-  sudo rm -rf /usr/local/bin/kubectl
-  sudo rm -rf /usr/local/bin/kubelet
-  sudo rm -rf /usr/local/bin/helm
-  sudo rm -rf /usr/local/bin/hostess
-  sudo rm -rf /opt/cni
+  # sudo rm -rf /usr/local/bin/bootkube
+  # sudo rm -rf /usr/local/bin/kubectl
+  # sudo rm -rf /usr/local/bin/kubelet
+  # sudo rm -rf /usr/local/bin/helm
+  # sudo rm -rf /usr/local/bin/hostess
+  # sudo rm -rf /opt/cni
   sudo rm -rf /etc/systemd/system/kubelet.service
   sudo systemctl daemon-reload
   ### These can optionally be enabled, but Docker will need to be reinstalled, and volumes will be perm removed:
-  sudo apt-get remove docker.io -y
-  sudo rm -rf /var/lib/docker
-  sudo rm -rf /var/lib/kubelet
-  sudo rm -rf /var/lib/dockershim
-} &> /dev/null
-
+  # sudo apt-get remove docker.io -y
+  # sudo rm -rf /var/lib/docker
+  # sudo rm -rf /var/lib/kubelet
+  # sudo rm -rf /var/lib/dockershim
+  sudo rm -rf /var/lib/openstack-helm/*
+  sudo rm -rf /var/lib/nova
 echo_green "\nCOMPLETE!\n"

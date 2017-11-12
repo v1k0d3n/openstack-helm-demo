@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright 2017 The Bootkube-CI Authors.
+# Copyright 2017 Charter DNA Team (CTEC).
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -34,5 +34,5 @@ source /opt/demo/.bootkube_env
 for node in $(cat /opt/demo/deploy-node/nodes); do
   echo -e "Cleaning $node:"
   ssh -tq $node "cd ${BOOTKUBE_DIR} && \
-    ./clean-kube-gen";
+    ./clean-kube-wipe";
 done

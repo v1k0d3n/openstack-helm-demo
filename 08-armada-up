@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright 2017 The Bootkube-CI Authors.
+# Copyright 2017 Charter DNA Team (CTEC).
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -28,15 +28,23 @@ function echo_yellow {
   echo -e "${YELLOW}$1"; tput sgr0
 }
 
-source .bootkube_env
+source /opt/demo/.bootkube_env
 
-## REMOVING NODE INSTALLATIONS:
-for node in $(cat ./deploy-node/nodes); do
-  echo -e "Disabling kubelet.service, and stopping/removing containers for ${node}";
-    ssh -tq ${node} "cd ${BOOTKUBE_DIR}/bootkube-ci/ && \
-    ./bootkube-clean";
-  echo -e "Telling the Kubernetes Master to remove ${node}";
-  kubectl drain ${node} --force --ignore-daemonsets;
-  kubectl delete node ${node};
-  ssh -tq ${node} "sudo rm -rf ${BOOTKUBE_DIR}/bootkube-ci/";
-done
+sudo chmod 755 $HOME/.kube/config
+sudo chmod 755 $BOOTKUBE_DIR/.bootkube/tls/*
+
+echo 'Removing any old or stale Armada deployment:'
+sudo docker rm -f armada
+
+echo 'Launching OSH using Armada'
+#helm init
+sudo docker run -d --net host \
+  --privileged=true --name armada \
+  -v /opt/demo/.bootkube/tls:/opt/demo/.bootkube/tls \
+  -v /home/${USER}/.kube/config:/armada/.kube/config \
+  -v /opt/demo/manifests:/examples \
+  quay.io/charter-ctec/armada:v0.7.1
+
+alias armada="sudo docker exec armada armada"
+sleep 3
+sudo docker exec armada armada tiller --status

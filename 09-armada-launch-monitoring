@@ -1,5 +1,5 @@
 #!/bin/bash
-# Copyright 2017 The Bootkube-CI Authors.
+# Copyright 2017 Charter DNA Team (CTEC).
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -30,6 +30,14 @@ function echo_yellow {
 
 source /opt/demo/.bootkube_env
 
+echo_yellow "\nNow deploying Weave Scope to the cluster:"
+kubectl apply --namespace kube-system -f "https://cloud.weave.works/k8s/scope.yaml?k8s-version=$(kubectl version | base64 | tr -d '\n')"
+kubectl patch svc/weave-scope-app -n kube-system -p '{"spec": {"ports": [{"name": "app","nodePort": 30905,"port": 80,"protocol": "TCP","targetPort": 4040}],"type": "NodePort"}}'
+
+echo_yellow "\nDeploying the Kubernetes-Dashboard:"
+kubectl create -f https://raw.githubusercontent.com/kubernetes/dashboard/v1.6.3/src/deploy/kubernetes-dashboard.yaml
+kubectl patch svc/kubernetes-dashboard -n kube-system -p '{"spec": {"ports": [{"nodePort": 30906,"port": 80,"protocol": "TCP","targetPort": 9090}],"type": "NodePort"}}'
+
 echo_yellow "\nCleaning any potential stale jobs before launching Armada deployment:"
 export job_array=`(kubectl get jobs -n monitoring | (awk -F"," '{print $1}') | (cut -d' ' -f1) | (sed '1d') | (awk '/[^[:upper:] ]/') | grep -v ceph)`
 for job in $job_array;do
@@ -39,3 +47,13 @@ done
 echo_yellow "\nUsing Armada to deploy Prometheus and Grafana:"
 sudo docker exec armada armada tiller --status
 sudo docker exec armada armada apply /examples/monitoring.yaml
+
+echo_green "\nCLUSTER MONITORING READY!"
+echo_green "\nUse the following ports to reach Monitoring Services:"
+kubectl get svc -n monitoring
+
+echo_green "\nUse the following ports to reach Kubernetes Services:"
+kubectl get svc -n kube-system
+
+echo_green "\nList of deployed Kubernetes add-ons:"
+kubectl cluster-info
