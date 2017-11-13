@@ -78,10 +78,11 @@ data:
         cpu: 500m
         memory: 500Mi  
   source:
-    type: local
-    location: stable/fluent-bit
-    subpath: fluent-bit
-    reference: null
+    type: git
+    location: https://github.com/kubernetes/charts
+    subpath: stable/fluent-bit
+    reference: master
+  dependencies: []
 ---
 schema: armada/Chart/v1
 metadata:
