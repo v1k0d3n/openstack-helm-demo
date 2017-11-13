@@ -33,7 +33,7 @@ data:
         storage_class: default
   source:
     type: tar
-    location: https://v1k0d3n.github.io/demo/charts/newton/prometheus-3.0.3.tgz
+    location: https://v1k0d3n.github.io/demo/charts/monitoring/prometheus-3.0.3.tgz
     subpath: prometheus
     reference: null
   dependencies:
@@ -51,11 +51,53 @@ data:
   values: {}
   source:
     type: tar
-    location: https://v1k0d3n.github.io/demo/charts/newton/grafana-3.0.3.tgz
+    location: https://v1k0d3n.github.io/demo/charts/monitoring/grafana-3.0.3.tgz
     subpath: grafana
     reference: null
   dependencies:
     - helm-toolkit
+---
+schema: armada/Chart/v1
+metadata:
+  schema: metadata/Document/v1
+  name: fluent-bit
+data:
+  chart_name: fluent-bit
+  release: fluent-bit
+  namespace: kube-system
+  timeout: 300
+  values:
+    backend:
+      type: es
+      es:
+        host: elasticsearch.monitor.svc.cluster.local
+    resources:
+      limits:
+        memory: 500Mi
+      requests:
+        cpu: 500m
+        memory: 500Mi  
+  source:
+    type: local
+    location: stable/fluent-bit
+    subpath: fluent-bit
+    reference: null
+---
+schema: armada/Chart/v1
+metadata:
+  schema: metadata/Document/v1
+  name: elasticsearch-kibana
+data:
+  chart_name: elasticsearch-kibana
+  release: elasticsearch-kibana
+  namespace: monitor
+  timeout: 300
+  values: {}
+  source:
+    type: tar
+    location: https://v1k0d3n.github.io/demo/charts/monitoring/elasticsearch-kibana-3.0.3.tgz
+    subpath: elasticsearch-kibana
+    reference: null
 ---
 schema: armada/ChartGroup/v1
 metadata:
@@ -67,6 +109,8 @@ data:
   chart_group:
     - prometheus
     - grafana
+    - elasticsearch-kibana
+    - fluent-bit
 ---
 schema: armada/Manifest/v1
 metadata:
