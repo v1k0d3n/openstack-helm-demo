@@ -1,0 +1,51 @@
+apiVersion: v1
+entries:
+  elasticsearch-kibana:
+  - apiVersion: v1
+    created: 2017-11-14T11:30:41.088936119-07:00
+    description: Elasticsearch is a distributed, RESTful search and analytics engine
+      capable of solving a growing number of use cases.
+    digest: ccec40bb6733be051295f65fbcbb6174f9aa3782902cf9348e3833a1123daf0a
+    engine: gotpl
+    home: https://www.elastic.co/products/elasticsearch
+    icon: https://static-www.elastic.co/assets/blteb1c97719574938d/logo-elastic-elasticsearch-lt.svg
+    maintainers:
+    - name: Sean Larimore
+    name: elasticsearch-kibana
+    sources:
+    - https://www.elastic.co/products/elasticsearch
+    - https://github.com/pires/kubernetes-elasticsearch-cluster
+    urls:
+    - https://v1k0d3n.github.io/demo/charts/monitoring/elasticsearch-kibana-3.0.3.tgz
+    version: 3.0.3
+  grafana:
+  - apiVersion: v1
+    created: 2017-11-14T11:30:41.092015673-07:00
+    description: OpenStack-Helm Grafana
+    digest: c16c8347e74f33cf6368fa74d194109bf9feb7ce5bea9208d8276c945525bf3f
+    home: https://grafana.com/
+    maintainers:
+    - name: OpenStack-Helm Authors
+    name: grafana
+    sources:
+    - https://github.com/grafana/grafana
+    - https://git.openstack.org/cgit/openstack/openstack-helm-addons
+    urls:
+    - https://v1k0d3n.github.io/demo/charts/monitoring/grafana-3.0.3.tgz
+    version: 3.0.3
+  prometheus:
+  - apiVersion: v1
+    created: 2017-11-14T11:30:41.093920673-07:00
+    description: OpenStack-Helm Prometheus
+    digest: 982443bee377d6d0344e6820ca01f9a3ccde537f76ea475a38e4fc9eadda9c74
+    home: https://prometheus.io/
+    maintainers:
+    - name: OpenStack-Helm Authors
+    name: prometheus
+    sources:
+    - https://github.com/prometheus/prometheus
+    - https://git.openstack.org/cgit/openstack/openstack-helm-addons
+    urls:
+    - https://v1k0d3n.github.io/demo/charts/monitoring/prometheus-3.0.3.tgz
+    version: 3.0.3
+generated: 2017-11-14T11:30:41.083055056-07:00
