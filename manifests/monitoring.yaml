@@ -95,7 +95,7 @@ data:
   timeout: 300
   values: {}
   source:
-    type: tar
+    type: git
     location: https://github.com/charter-ctec/elasticsearch-kibana
     subpath: .
     reference: null
