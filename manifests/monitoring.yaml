@@ -70,7 +70,7 @@ data:
     backend:
       type: es
       es:
-        host: elasticsearch.monitor.svc.cluster.local
+        host: elasticsearch.monitoring.svc.cluster.local
     resources:
       limits:
         memory: 500Mi
@@ -91,14 +91,15 @@ metadata:
 data:
   chart_name: elasticsearch-kibana
   release: elasticsearch-kibana
-  namespace: monitor
+  namespace: monitoring
   timeout: 300
   values: {}
   source:
     type: tar
-    location: https://v1k0d3n.github.io/demo/charts/monitoring/elasticsearch-kibana-3.0.3.tgz
-    subpath: elasticsearch-kibana
+    location: https://github.com/charter-ctec/elasticsearch-kibana
+    subpath: .
     reference: null
+  dependencies: []
 ---
 schema: armada/ChartGroup/v1
 metadata:
