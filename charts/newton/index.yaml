@@ -1,0 +1,266 @@
+apiVersion: v1
+entries:
+  ceph:
+  - apiVersion: v1
+    created: 2017-11-14T11:00:58.197808709-07:00
+    description: OpenStack-Helm Ceph
+    digest: d4eb4193dd833200576a580ed076ae8b6d444fd57467a6726d4ce3c07ab9be2c
+    name: ceph
+    urls:
+    - https://v1k0d3n.github.io/demo/charts/newton/ceph-3.0.3.tgz
+    version: 3.0.3
+  cinder:
+  - apiVersion: v1
+    created: 2017-11-14T11:00:58.201676672-07:00
+    description: OpenStack-Helm Cinder
+    digest: b79e63d765c3b1c5443c17f23eeb73135626b2da3a1bae111de55575b1f57c19
+    home: https://docs.openstack.org/developer/cinder
+    icon: https://www.openstack.org/themes/openstack/images/project-mascots/Cinder/OpenStack_Project_Cinder_vertical.png
+    maintainers:
+    - name: OpenStack-Helm Authors
+    name: cinder
+    sources:
+    - https://git.openstack.org/cgit/openstack/cinder
+    - https://git.openstack.org/cgit/openstack/openstack-helm
+    urls:
+    - https://v1k0d3n.github.io/demo/charts/newton/cinder-3.0.3.tgz
+    version: 3.0.3
+  etcd:
+  - apiVersion: v1
+    created: 2017-11-14T11:00:58.203909736-07:00
+    description: OpenStack-Helm etcd
+    digest: 0a6988de9b6f5cfdef72477e1a670deba955110774ec1190ebc4e542ec486a8f
+    name: etcd
+    urls:
+    - https://v1k0d3n.github.io/demo/charts/newton/etcd-3.0.3.tgz
+    version: 3.0.3
+  glance:
+  - apiVersion: v1
+    created: 2017-11-14T11:00:58.20766915-07:00
+    description: OpenStack-Helm Glance
+    digest: 8cf0c056fcc4c3b21a804b1c78eaf5d62e754ed869e6e1b33daf1cd138a69e6b
+    home: https://docs.openstack.org/developer/glance
+    icon: https://www.openstack.org/themes/openstack/images/project-mascots/Glance/OpenStack_Project_Glance_vertical.png
+    maintainers:
+    - name: OpenStack-Helm Authors
+    name: glance
+    sources:
+    - https://git.openstack.org/cgit/openstack/glance
+    - https://git.openstack.org/cgit/openstack/openstack-helm
+    urls:
+    - https://v1k0d3n.github.io/demo/charts/newton/glance-3.0.3.tgz
+    version: 3.0.3
+  grafana:
+  - apiVersion: v1
+    created: 2017-11-14T11:00:58.21442123-07:00
+    description: OpenStack-Helm Grafana
+    digest: c16c8347e74f33cf6368fa74d194109bf9feb7ce5bea9208d8276c945525bf3f
+    home: https://grafana.com/
+    maintainers:
+    - name: OpenStack-Helm Authors
+    name: grafana
+    sources:
+    - https://github.com/grafana/grafana
+    - https://git.openstack.org/cgit/openstack/openstack-helm-addons
+    urls:
+    - https://v1k0d3n.github.io/demo/charts/newton/grafana-3.0.3.tgz
+    version: 3.0.3
+  heat:
+  - apiVersion: v1
+    created: 2017-11-14T11:00:58.218521148-07:00
+    description: OpenStack-Helm Heat
+    digest: 4c8c32c1a6aace5b314ebecda5ea790b2b071d9522d59dd16ec7d013a13148f6
+    home: https://docs.openstack.org/developer/heat
+    icon: https://www.openstack.org/themes/openstack/images/project-mascots/Heat/OpenStack_Project_Heat_vertical.png
+    maintainers:
+    - name: OpenStack-Helm Authors
+    name: heat
+    sources:
+    - https://git.openstack.org/cgit/openstack/heat
+    - https://git.openstack.org/cgit/openstack/openstack-helm
+    urls:
+    - https://v1k0d3n.github.io/demo/charts/newton/heat-3.0.3.tgz
+    version: 3.0.3
+  helm-toolkit:
+  - apiVersion: v1
+    created: 2017-11-14T11:00:58.220553731-07:00
+    description: OpenStack-Helm Helm-Toolkit
+    digest: 93f5b822207c646b133430c4c06eb38e21c5c3cb3bb6c7354ae564b7b2458898
+    name: helm-toolkit
+    urls:
+    - https://v1k0d3n.github.io/demo/charts/newton/helm-toolkit-3.0.3.tgz
+    version: 3.0.3
+  horizon:
+  - apiVersion: v1
+    created: 2017-11-14T11:00:58.224398266-07:00
+    description: OpenStack-Helm Horizon
+    digest: 1e1377aa1fa9409b30530d92d419df02fb2c79699d310edd263c7d63504562ad
+    home: https://docs.openstack.org/developer/horizon
+    icon: https://www.openstack.org/themes/openstack/images/project-mascots/Horizon/OpenStack_Project_Horizon_vertical.png
+    maintainers:
+    - name: OpenStack-Helm Authors
+    name: horizon
+    sources:
+    - https://git.openstack.org/cgit/openstack/horizon
+    - https://git.openstack.org/cgit/openstack/openstack-helm
+    urls:
+    - https://v1k0d3n.github.io/demo/charts/newton/horizon-3.0.3.tgz
+    version: 3.0.3
+  ingress:
+  - created: 2017-11-14T11:00:58.237591713-07:00
+    description: OpenStack-Helm Ingress Controller
+    digest: 1bd5088e827a477ccdcc4c25383aaa313fc1fa13f834d90144c1d105356311b7
+    home: https://github.com/kubernetes/ingress
+    maintainers:
+    - name: OpenStack-Helm Authors
+    name: ingress
+    sources:
+    - https://github.com/kubernetes/ingress
+    - https://git.openstack.org/cgit/openstack/openstack-helm
+    urls:
+    - https://v1k0d3n.github.io/demo/charts/newton/ingress-3.0.3.tgz
+    version: 3.0.3
+  keystone:
+  - apiVersion: v1
+    created: 2017-11-14T11:00:58.248098817-07:00
+    description: OpenStack-Helm Keystone
+    digest: e7fc1694395351c8807cbbf358d9c17e35d8a1d684562eea1e853e900ef3049e
+    home: https://docs.openstack.org/developer/keystone
+    icon: https://www.openstack.org/themes/openstack/images/project-mascots/Keystone/OpenStack_Project_Keystone_vertical.png
+    maintainers:
+    - name: OpenStack-Helm Authors
+    name: keystone
+    sources:
+    - https://git.openstack.org/cgit/openstack/keystone
+    - https://git.openstack.org/cgit/openstack/openstack-helm
+    urls:
+    - https://v1k0d3n.github.io/demo/charts/newton/keystone-3.0.3.tgz
+    version: 3.0.3
+  libvirt:
+  - apiVersion: v1
+    created: 2017-11-14T11:00:58.252748852-07:00
+    description: OpenStack-Helm libvirt
+    digest: 0c99fecb0e9b6498ac33e256f46ec747bd045226d79fda440bc3414106aa7555
+    home: https://libvirt.org
+    maintainers:
+    - name: OpenStack-Helm Authors
+    name: libvirt
+    sources:
+    - https://libvirt.org/git/?p=libvirt.git;a=summary
+    - https://git.openstack.org/cgit/openstack/openstack-helm
+    urls:
+    - https://v1k0d3n.github.io/demo/charts/newton/libvirt-3.0.3.tgz
+    version: 3.0.3
+  memcached:
+  - apiVersion: v1
+    created: 2017-11-14T11:00:58.25527768-07:00
+    description: OpenStack-Helm Memcached
+    digest: fbabbd1191a6e28b94d6423d03c4274bbf8260d053a523e488ffb04304a95d01
+    name: memcached
+    urls:
+    - https://v1k0d3n.github.io/demo/charts/newton/memcached-3.0.3.tgz
+    version: 3.0.3
+  neutron:
+  - apiVersion: v1
+    created: 2017-11-14T11:00:58.26312-07:00
+    description: OpenStack-Helm Neutron
+    digest: d6e62ce4153edea10e46480f2c5c92ce6de7016bd6f03289da1df7f2b0adb646
+    home: https://docs.openstack.org/developer/neutron
+    icon: https://www.openstack.org/themes/openstack/images/project-mascots/Neutron/OpenStack_Project_Neutron_vertical.png
+    maintainers:
+    - name: OpenStack-Helm Authors
+    name: neutron
+    sources:
+    - https://git.openstack.org/cgit/openstack/neutron
+    - https://git.openstack.org/cgit/openstack/openstack-helm
+    urls:
+    - https://v1k0d3n.github.io/demo/charts/newton/neutron-3.0.3.tgz
+    version: 3.0.3
+  nfs-provisioner:
+  - apiVersion: v1
+    created: 2017-11-14T11:00:58.264302489-07:00
+    description: OpenStack-Helm NFS
+    digest: ace02732045c79dfb06c9f2969e5c7445225481754fc476a541bde414baeeb3d
+    home: https://github.com/kubernetes-incubator/external-storage
+    maintainers:
+    - name: OpenStack-Helm Authors
+    name: nfs-provisioner
+    sources:
+    - https://github.com/kubernetes-incubator/external-storage
+    - https://git.openstack.org/cgit/openstack/openstack-helm
+    urls:
+    - https://v1k0d3n.github.io/demo/charts/newton/nfs-provisioner-3.0.3.tgz
+    version: 3.0.3
+  nova:
+  - apiVersion: v1
+    created: 2017-11-14T11:00:58.266944192-07:00
+    description: OpenStack-Helm Nova
+    digest: d1b60a1885ab5c4ac39cbdc40a6709d3597cd5cbfa94018a176fb23d5d75355c
+    home: https://docs.openstack.org/developer/nova
+    icon: https://www.openstack.org/themes/openstack/images/project-mascots/Nova/OpenStack_Project_Nova_vertical.png
+    maintainers:
+    - name: OpenStack-Helm Authors
+    name: nova
+    sources:
+    - https://git.openstack.org/cgit/openstack/nova
+    - https://git.openstack.org/cgit/openstack/openstack-helm
+    urls:
+    - https://v1k0d3n.github.io/demo/charts/newton/nova-3.0.3.tgz
+    version: 3.0.3
+  openvswitch:
+  - apiVersion: v1
+    created: 2017-11-14T11:00:58.268617904-07:00
+    description: OpenStack-Helm OpenVSwitch
+    digest: fb7842b95d624c3443916729f46da59c73bb7986b8c4ea8e7f9c04ca0e29f81f
+    home: http://openvswitch.org
+    icon: https://www.openstack.org/themes/openstack/images/project-mascots/Neutron/OpenStack_Project_Neutron_vertical.png
+    maintainers:
+    - name: OpenStack-Helm Authors
+    name: openvswitch
+    sources:
+    - https://github.com/openvswitch/ovs
+    - https://git.openstack.org/cgit/openstack/openstack-helm
+    urls:
+    - https://v1k0d3n.github.io/demo/charts/newton/openvswitch-3.0.3.tgz
+    version: 3.0.3
+  prometheus:
+  - apiVersion: v1
+    created: 2017-11-14T11:00:58.27066706-07:00
+    description: OpenStack-Helm Prometheus
+    digest: 982443bee377d6d0344e6820ca01f9a3ccde537f76ea475a38e4fc9eadda9c74
+    home: https://prometheus.io/
+    maintainers:
+    - name: OpenStack-Helm Authors
+    name: prometheus
+    sources:
+    - https://github.com/prometheus/prometheus
+    - https://git.openstack.org/cgit/openstack/openstack-helm-addons
+    urls:
+    - https://v1k0d3n.github.io/demo/charts/newton/prometheus-3.0.3.tgz
+    version: 3.0.3
+  rabbitmq:
+  - apiVersion: v1
+    created: 2017-11-14T11:00:58.288599133-07:00
+    description: OpenStack-Helm RabbitMQ
+    digest: 1d9d72382d53a1e1bc23d37c176663ca0decade98115126b3254cda5b5abb9ac
+    name: rabbitmq
+    urls:
+    - https://v1k0d3n.github.io/demo/charts/newton/rabbitmq-3.0.3.tgz
+    version: 3.0.3
+  rally:
+  - apiVersion: v1
+    created: 2017-11-14T11:00:58.297180724-07:00
+    description: OpenStack-Helm rally
+    digest: d7f389b069b18077c351f7f738869c19bd76d7c93981a98d20e8526021af6e29
+    home: https://docs.openstack.org/developer/rally
+    icon: https://www.openstack.org/themes/openstack/images/project-mascots/rally/OpenStack_Project_rally_vertical.png
+    maintainers:
+    - name: OpenStack-Helm Authors
+    name: rally
+    sources:
+    - https://git.openstack.org/cgit/openstack/rally
+    - https://git.openstack.org/cgit/openstack/openstack-helm
+    urls:
+    - https://v1k0d3n.github.io/demo/charts/newton/rally-3.0.3.tgz
+    version: 3.0.3
+generated: 2017-11-14T11:00:58.193970069-07:00
