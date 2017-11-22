@@ -59,3 +59,7 @@ export OS_SVC_PASSWORD=password               ### OPENSTACK SVC PASSWORD      ##
 
 # CONTAINER REGISTRY PREPARATION
 export REGISTRY_ADMIN_PASSWORD=password
+
+# ELASTICSEARCH AND KIBANA PREPARATION
+export ELASTICSEARCH_KIBANA_REPO_URL="https://github.com/charter-ctec/elasticsearch-kibana.git"
+export ELASTICSEARCH_KIBANA_BRANCH=demo
