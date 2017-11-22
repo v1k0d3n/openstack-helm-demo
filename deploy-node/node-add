@@ -42,7 +42,7 @@ EOF
 
 ### NEW INSTALLATIONS:
 echo_green "\nPhase I: Installing system prerequisites:"
-pkg="build-essential curl docker.io ethtool git lldpd socat traceroute vim ceph-common nfs-common"
+pkg="build-essential curl ethtool git lldpd socat traceroute vim ceph-common nfs-common"
 
 for pkg in ${pkg}; do
     if sudo dpkg --get-selections | grep -q "^${pkg}[[:space:]]*install$" >/dev/null; then
@@ -52,6 +52,8 @@ for pkg in ${pkg}; do
         echo "Successfully installed ${pkg}"
     fi
 done
+
+curl https://raw.githubusercontent.com/rancher/install-docker/master/1.12.6.sh | bash
 
 
 ### PREPARE: /etc/resolv.conf
