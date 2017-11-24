@@ -38,6 +38,16 @@ helm delete --purge osh-libvirt
 helm delete --purge osh-openvswitch
 helm delete --purge osh-memcached
 
+echo_yellow "\nDELETING MONITORING STACK:"
+kubectl delete pvc/alertmanager-pvc
+kubectl delete pvc/prometheus-pvc
+kubectl delete statefulset alertmanager --force=true --grace-period=0 --cascade=false
+kubectl delete statefulset prometheus --force=true --grace-period=0 --cascade=false
+kubectl delete pod alertmanager-0 --force=true --grace-period=0
+kubectl delete pod prometheus-0 --force=true --grace-period=0
+helm delete ctec-prometheus --purge
+helm delete ctec-grafana --purge
+
 echo_yellow "\nDELETING OPENSTACK COMPONENTS:"
 helm delete --purge osh-horizon &
 sleep 5

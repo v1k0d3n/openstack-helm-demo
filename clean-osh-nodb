@@ -50,3 +50,8 @@ helm delete --purge osh-nova
 kubectl delete cronjob/`(kubectl get cronjob -n openstack | grep keystone-credential | cut -d " " -f1)` -n openstack
 kubectl delete cronjob/`(kubectl get cronjob -n openstack | grep keystone-fernet | cut -d " " -f1)` -n openstack
 kubectl delete cronjob/`(kubectl get cronjob -n openstack | grep cinder | cut -d " " -f1)` -n openstack
+
+sudo rm -rf /var/lib/nova
+for node in $(cat /opt/demo/deploy-node/nodes); do
+  ssh -tq ${node} "sudo rm -rf /var/lib/nova";
+done
