@@ -1,0 +1,33 @@
+apiVersion: v1
+entries:
+  grafana:
+  - apiVersion: v1
+    created: 2017-11-21T21:34:55.940281855-07:00
+    description: OpenStack-Helm Grafana
+    digest: c16c8347e74f33cf6368fa74d194109bf9feb7ce5bea9208d8276c945525bf3f
+    home: https://grafana.com/
+    maintainers:
+    - name: OpenStack-Helm Authors
+    name: grafana
+    sources:
+    - https://github.com/grafana/grafana
+    - https://git.openstack.org/cgit/openstack/openstack-helm-addons
+    urls:
+    - https://v1k0d3n.github.io/demo/charts/monitoring/grafana-3.0.3.tgz
+    version: 3.0.3
+  prometheus:
+  - apiVersion: v1
+    created: 2017-11-21T21:34:55.944970863-07:00
+    description: OpenStack-Helm Prometheus
+    digest: 982443bee377d6d0344e6820ca01f9a3ccde537f76ea475a38e4fc9eadda9c74
+    home: https://prometheus.io/
+    maintainers:
+    - name: OpenStack-Helm Authors
+    name: prometheus
+    sources:
+    - https://github.com/prometheus/prometheus
+    - https://git.openstack.org/cgit/openstack/openstack-helm-addons
+    urls:
+    - https://v1k0d3n.github.io/demo/charts/monitoring/prometheus-3.0.3.tgz
+    version: 3.0.3
+generated: 2017-11-21T21:34:55.931717069-07:00

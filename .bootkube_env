@@ -14,7 +14,7 @@ export ETCD_SVC_ADDR='10.96.232.136'          ### ETCD CLUSTER IP ADDRESS      #
 export ETCD_SVC_PORT='6666'                   ### ETCD SERVICE PORT            ###
 export ETCD_SVC_PEER='6667'                   ### ETCD SERVICE PEER PORT       ###
 export KUBE_SVC_PORT='8443'                   ### PORT FOR KUBE API ENDPOINT   ###
-export KUBE_HW='ens3'                         ### MODIFY FOR IFCONFIG HW INT   ###
+export KUBE_HW='eth0'                         ### MODIFY FOR IFCONFIG HW INT   ###
 export KUBE_DNS_API='kubernetes.default'      ### DNS API ENDPOINT             ###
 export NSERVER01='10.96.0.10'                 ### NEEDS TO BE CLUSTER DNS IP   ###
 export NSERVER02='8.8.4.4'                    ### THE PRIMARY DNS SERVER       ###
@@ -35,8 +35,8 @@ export CEPH_CLUSTER_NETWORK=${HOST_SUB_CIDR}  ### CEPH CLUSTER NETWORK        ##
 export CEPH_PUBLIC_NETWORK=${HOST_SUB_CIDR}   ### CEPH PUBLIC NETWORK         ###
 export CEPH_RGW_KEYSTONE_ENABLED=true         ### CEPH RGW ENABLED KEYSTONE   ###
 export MARIADB_SIZE=15Gi                      ### MARIADB PVC SIZE            ###
-export MARIADB_REPLICAS=1                     ### MARIADB REPLICA_COUNT       ###
-export RABBITMQ_REPLICAS=1                    ### RABBITMQ REPLICA COUNT      ###
+export MARIADB_REPLICAS=3                     ### MARIADB REPLICA_COUNT       ###
+export RABBITMQ_REPLICAS=3                    ### RABBITMQ REPLICA COUNT      ###
 export OVS_EXTERNAL_IFACE=eth1                ### OPENVSWITCH EXT IFACE       ###
 export GLANCE_BACKEND=radosgw                 ### GLANCE BACKEND OPTIONS      ###
 
@@ -56,3 +56,6 @@ export OS_ADMIN_PASSWORD=password             ### OPENSTACK ADMIN PASSWORD    ##
 export OS_SVC_PROJECT=demo                    ### OPENSTACK SVC TENANT        ###
 export OS_SVC_USERNAME=demo                   ### OPENSTACK SVC USERNAME      ###
 export OS_SVC_PASSWORD=password               ### OPENSTACK SVC PASSWORD      ###
+
+# CONTAINER REGISTRY PREPARATION
+export REGISTRY_ADMIN_PASSWORD=password
