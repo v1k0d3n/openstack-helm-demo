@@ -31,7 +31,7 @@ function echo_yellow {
 source /opt/demo/.bootkube_env
 
 echo_yellow "\nCleaning any potential stale jobs before launching Armada deployment:"
-export job=`(kubectl get jobs -n openstack | (awk -F"," '{print $1}') | (cut -d' ' -f1) | (sed '1d') | (awk '/[^[:upper:] ]/') | grep -v ceph)`
+export job_array=`(kubectl get jobs -n openstack | (awk -F"," '{print $1}') | (cut -d' ' -f1) | (sed '1d') | (awk '/[^[:upper:] ]/') | grep -v ceph)`
 for job in $job_array;do
  kubectl delete job $job -n openstack
 done
