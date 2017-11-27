@@ -366,6 +366,10 @@ data:
   upgrade:
     no_hooks: false
   values:
+    images:
+      dep_check: quay.io/stackanetes/kubernetes-entrypoint:v0.2.1
+      tags:
+        dep_check: quay.io/stackanetes/kubernetes-entrypoint:v0.2.1
     pod:
       lifecycle:
         upgrades:
@@ -441,6 +445,10 @@ data:
   upgrade:
     no_hooks: false
   values:
+    images:
+      dep_check: quay.io/stackanetes/kubernetes-entrypoint:v0.2.1
+      tags:
+        dep_check: quay.io/stackanetes/kubernetes-entrypoint:v0.2.1
     conf:
       nova:
         libvirt:
@@ -541,6 +549,7 @@ data:
           user:
             project_name: demo
     manifests:
+      cron_volume_usage_audit: false
       job_db_drop: true
     dependencies:
       ks_user:

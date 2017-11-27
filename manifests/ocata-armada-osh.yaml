@@ -266,6 +266,7 @@ data:
         glance:
           uid: 42415
     images:
+      dep_check: quay.io/stackanetes/kubernetes-entrypoint:v0.2.1
       db_sync: quay.io/charter-os/ubuntu-source-glance-api:ocata
       api: quay.io/charter-os/ubuntu-source-glance-api:ocata
       registry: quay.io/charter-os/ubuntu-source-glance-registry:ocata
@@ -328,11 +329,13 @@ data:
       replicas:
         server: 2
     images:
-      db_sync: quay.io/charter-os/ubuntu-source-neutron-server:ocata
-      server: quay.io/charter-os/ubuntu-source-neutron-server:ocata
-      dhcp: quay.io/charter-os/ubuntu-source-neutron-dhcp-agent:ocata
-      metadata: quay.io/charter-os/ubuntu-source-neutron-metadata-agent:ocata
-      l3: quay.io/charter-os/ubuntu-source-neutron-l3-agent:ocata
+      dep_check: quay.io/stackanetes/kubernetes-entrypoint:v0.2.1
+      tags:
+        db_sync: quay.io/charter-os/ubuntu-source-neutron-server:ocata
+        server: quay.io/charter-os/ubuntu-source-neutron-server:ocata
+        dhcp: quay.io/charter-os/ubuntu-source-neutron-dhcp-agent:ocata
+        metadata: quay.io/charter-os/ubuntu-source-neutron-metadata-agent:ocata
+        l3: quay.io/charter-os/ubuntu-source-neutron-l3-agent:ocata
     bootstrap:
       enabled: false
       script: |
@@ -572,6 +575,7 @@ data:
       cloudwatch: quay.io/charter-os/ubuntu-source-heat-api:ocata
       engine: quay.io/charter-os/ubuntu-source-heat-engine:ocata
     manifests:
+      cron_volume_usage_audit: false
       job_db_drop: true
   source:
     type: tar
@@ -619,5 +623,5 @@ metadata:
 data:
   release_prefix: osh
   chart_groups:
-    - openstack-infra-services
+#    - openstack-infra-services
     - openstack-components
