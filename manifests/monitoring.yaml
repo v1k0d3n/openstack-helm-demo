@@ -26,6 +26,9 @@ data:
   namespace: default
   timeout: 300
   values:
+    secrets:
+      identity:
+        admin: nova-keystone-admin
     storage:
       alertmanager:
         storage_class: default
