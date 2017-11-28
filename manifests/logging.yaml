@@ -1,0 +1,45 @@
+---
+schema: armada/Chart/v1
+metadata:
+  schema: metadata/Document/v1
+  name: fluent-bit
+data:
+  chart_name: fluent-bit
+  release: fluent-bit
+  namespace: kube-system
+  values:
+    backend:
+      type: es
+      es:
+        host: elasticsearch.monitoring.svc.cluster.local
+    resources:
+      limits:
+        memory: 500Mi
+      requests:
+        cpu: 500m
+        memory: 500Mi  
+  source:
+    type: git
+    location: https://github.com/kubernetes/charts
+    subpath: stable/fluent-bit
+    reference: master
+  dependencies: []
+---
+schema: armada/ChartGroup/v1
+metadata:
+  schema: metadata/Document/v1
+  name: fluent-bit
+data:
+  description: "Fluent Bit Chart"
+  sequenced: False
+  chart_group:
+    - fluent-bit
+---
+schema: armada/Manifest/v1
+metadata:
+  schema: metadata/Document/v1
+  name: armada-manifest
+data:
+  release_prefix: ctec
+  chart_groups:
+    - fluent-bit

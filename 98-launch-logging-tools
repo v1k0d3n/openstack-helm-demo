@@ -1,0 +1,60 @@
+#!/bin/bash
+# Copyright 2017 Charter DNA Team (CTEC).
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+### Declare colors to use during the running of this script:
+declare -r GREEN="\033[0;32m"
+declare -r RED="\033[0;31m"
+declare -r YELLOW="\033[0;33m"
+
+function echo_green {
+  echo -e "${GREEN}$1"; tput sgr0
+}
+function echo_red {
+  echo -e "${RED}$1"; tput sgr0
+}
+function echo_yellow {
+  echo -e "${YELLOW}$1"; tput sgr0
+}
+
+source /opt/demo/.bootkube_env
+
+echo_yellow "\nPackaging elasticsearch-kibana chart:"
+git clone ${ELASTICSEARCH_KIBANA_REPO_URL} ${BOOTKUBE_DIR}/projects/elasticsearch-kibana && cd ${BOOTKUBE_DIR}/projects/elasticsearch-kibana && git checkout ${ELASTICSEARCH_KIBANA_BRANCH}
+
+helm package .
+
+echo_yellow "\nInstalling elasticsearch-kibana chart:"
+helm install --namespace=monitoring $HELM_REPO/elasticsearch-kibana --name=elasticsearch-kibana
+
+KIBANA_NODEPORT=$(kubectl get svc kibana -n monitoring -o jsonpath='{.spec.ports[].nodePort}')
+
+echo -e -n "Waiting for Kibana pod to initialize..."
+while true; do
+  http_status=$(curl -I -s kibana.monitoring.svc.cluster.local | head -n 1|cut -d$' ' -f2)
+  if  [ "$http_status" = 200 ]; then
+    break
+  fi
+  echo -n "."
+  sleep 1
+done
+
+echo_green "\nThe Kibana dashboard can be reached at: http://$KUBE_IP:$KIBANA_NODEPORT"
+
+echo_yellow "\nUsing Armada to deploy Fluent bit:"
+sudo docker exec armada armada tiller --status
+sudo docker exec armada armada apply /examples/logging.yaml
+
+echo_green "\nLOG COLLECTION TOOLS READY!"
+
