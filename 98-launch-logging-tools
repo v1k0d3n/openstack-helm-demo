@@ -30,11 +30,6 @@ function echo_yellow {
 
 source /opt/demo/.bootkube_env
 
-
-echo_yellow "\nUsing Armada to deploy Fluent bit:"
-sudo docker exec armada armada tiller --status
-sudo docker exec armada armada apply /examples/fluent_bit.yaml
-
 echo_yellow "\nPackaging elasticsearch-kibana chart:"
 git clone ${ELASTICSEARCH_KIBANA_REPO_URL} ${BOOTKUBE_DIR}/projects/elasticsearch-kibana && cd ${BOOTKUBE_DIR}/projects/elasticsearch-kibana && git checkout ${ELASTICSEARCH_KIBANA_BRANCH}
 
@@ -43,6 +38,23 @@ helm package .
 echo_yellow "\nInstalling elasticsearch-kibana chart:"
 helm install --namespace=monitoring $HELM_REPO/elasticsearch-kibana --name=elasticsearch-kibana
 
-echo_green "\nLOG COLLECTION TOOLS READY!"
 KIBANA_NODEPORT=$(kubectl get svc kibana -n monitoring -o jsonpath='{.spec.ports[].nodePort}')
-echo_green "\nThe Kibana dashboard can be reached at: http://$KUBE_IP:$KIBANA_NODEPORT" 
+
+echo -e -n "Waiting for Kibana pod to initialize..."
+while true; do
+  http_status=$(curl -I -s kibana.monitoring.svc.cluster.local | head -n 1|cut -d$' ' -f2)
+  if  [ "$http_status" = 200 ]; then
+    break
+  fi
+  echo -n "."
+  sleep 1
+done
+
+echo_green "\nThe Kibana dashboard can be reached at: http://$KUBE_IP:$KIBANA_NODEPORT"
+
+echo_yellow "\nUsing Armada to deploy Fluent bit:"
+sudo docker exec armada armada tiller --status
+sudo docker exec armada armada apply /examples/logging.yaml
+
+echo_green "\nLOG COLLECTION TOOLS READY!"
+
